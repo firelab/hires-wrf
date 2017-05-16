@@ -9,6 +9,7 @@ import urllib2
 nightly_wrf = '/home/nwagenbrenner/nightly_wrf/'
 logfile = nightly_wrf + 'output/nightlyWRF.log'
 WPS = '/home/nwagenbrenner/src/WRF/WPS/'
+RUN = '/home/nwagenbrenner/src/WRF/WRFV3/run/'
 
 #=============================================================================
 #        Open a log file
@@ -16,6 +17,10 @@ WPS = '/home/nwagenbrenner/src/WRF/WPS/'
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 log = open(logfile, 'w')
 log.write('%s: Starting nightly WRF simulations. \n' % time)
+
+#=============================================================================
+#        Clean up from preivous runs
+#=============================================================================
 
 #=============================================================================
 #        Download HRRR
@@ -42,6 +47,9 @@ if p.returncode != 0:
 
 #=============================================================================
 #        Run geogrid.exe
+#        Only needs to be done once per domain, but make sure namelist.wps
+#        is correct.
+#        There should be a geo_em* in WPS/ for each domain
 #=============================================================================
 log.write('#=====================================================\n')
 log.write('#              Running geogrid.exe\n')
@@ -98,6 +106,44 @@ if p.returncode != 0:
     sys.exit() #exit with return code 0
 
 #=============================================================================
-#        Clean up
+#        Run real.exe
+#=============================================================================
+log.write('#=====================================================\n')
+log.write('#              Running real.exe \n')
+log.write('#=====================================================\n')
+
+p = subprocess.Popen(["./runReal.py"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
+out, err = p.communicate()
+
+if p.returncode != 0:
+    print "runReal: non-zero return code!"
+    print p.returncode
+    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    log.write('%s: runReal.py failed with return code %s \n' % (time, p.returncode))
+    log.write("!!! Error during runReal !!!")
+    log.close()
+    sys.exit() #exit with return code 0
+
+#=============================================================================
+#        Run wrf.exe
+#=============================================================================
+log.write('#=====================================================\n')
+log.write('#              Running wrf.exe \n')
+log.write('#=====================================================\n')
+
+p = subprocess.Popen(["mpirun -np 8 ./wrf.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
+out, err = p.communicate()
+
+if p.returncode != 0:
+    print "wrf.exe: non-zero return code!"
+    print p.returncode
+    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    log.write('%s: wrf.exe failed with return code %s \n' % (time, p.returncode))
+    log.write("!!! Error during wrf.exe !!!")
+    log.close()
+    sys.exit() #exit with return code 0
+
+#=============================================================================
+#        finish up
 #=============================================================================
 log.close()
