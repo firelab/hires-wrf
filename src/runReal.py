@@ -11,24 +11,32 @@ RUN = '/home/nwagenbrenner/src/WRF/WRFV3/run/'
 namelistFile = RUN + "namelist.input"
 namelist = open(namelistFile, 'w')
 
-startdate = datetime.datetime.utcnow().strftime('%Y-%m-%d')
-enddate = (datetime.datetime.utcnow()+datetime.timedelta(hours=24)).strftime('%Y-%m-%d')
+#today = datetime.datetime.utcnow().strftime('%Y-%m-%d')
+#tomorrow = (datetime.datetime.utcnow()+datetime.timedelta(hours=24)).strftime('%Y-%m-%d')
+
+start_year = datetime.date.today().year
+start_month = datetime.date.today().month
+start_day = datetime.date.today().day
+
+end_year = start_year
+end_month = start_month
+end_day = start_day
 
 namelist.write(" &time_control\n")
 namelist.write(" run_days                     = 0\n")
-namelist.write(" run_hours                    = 10\n")
+namelist.write(" run_hours                    = 4\n")
 namelist.write(" run_minutes                  = 0\n")
 namelist.write(" run_seconds                  = 0\n")
-namelist.write(" start_year                   = 2017\n")
-namelist.write(" start_month                  = 05\n")
-namelist.write(" start_day                    = 16\n")
+namelist.write(" start_year                   = %s\n" % start_year)
+namelist.write(" start_month                  = %s\n" % start_month)
+namelist.write(" start_day                    = %s\n" % start_day)
 namelist.write(" start_hour                   = 19\n")
 namelist.write(" start_minute                 = 0\n")
 namelist.write(" start_second                 = 0\n")
-namelist.write(" end_year                     = 2017\n")
-namelist.write(" end_month                    = 05\n")
-namelist.write(" end_day                      = 17\n")
-namelist.write(" end_hour                     = 04\n")
+namelist.write(" end_year                     = %s\n" % end_year)
+namelist.write(" end_month                    = %s\n" % end_month)
+namelist.write(" end_day                      = %s\n" % end_day)
+namelist.write(" end_hour                     = 22\n")
 namelist.write(" end_minute                   = 0\n")
 namelist.write(" end_second                   = 0\n")
 namelist.write(" interval_seconds             = 3600\n")

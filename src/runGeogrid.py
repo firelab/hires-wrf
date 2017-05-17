@@ -11,15 +11,15 @@ WPS = '/home/nwagenbrenner/src/WRF/WPS/'
 namelistFile = WPS + "namelist.wps"
 namelist = open(namelistFile, 'w')
 
-startdate = datetime.datetime.utcnow().strftime('%Y-%m-%d')
-enddate = (datetime.datetime.utcnow()+datetime.timedelta(hours=24)).strftime('%Y-%m-%d')
+today = datetime.datetime.utcnow().strftime('%Y-%m-%d')
+tomorrow = (datetime.datetime.utcnow()+datetime.timedelta(hours=24)).strftime('%Y-%m-%d')
 
 namelist.write("&share\n")
 namelist.write("wrf_core = 'ARW',\n")
 namelist.write("max_dom = 1,\n")
 #set start/end date (going out 18 hours)
-namelist.write("start_date = '%s_19:00:00',\n" % startdate)
-namelist.write("end_date   = '%s_04:00:00',\n" % enddate)
+namelist.write("start_date = '%s_19:00:00',\n" % today)
+namelist.write("end_date   = '%s_22:00:00',\n" % today)
 namelist.write("interval_seconds = 3600\n")
 namelist.write("io_form_geogrid = 2,\n")
 namelist.write("/\n")
