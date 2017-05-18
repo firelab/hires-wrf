@@ -2,6 +2,7 @@
 
 import subprocess
 import sys
+import shutil
 
 import datetime
 import urllib2
@@ -166,7 +167,7 @@ log.write('#=====================================================\n')
 log.write('#              Running wrf.exe \n')
 log.write('#=====================================================\n')
 
-p = subprocess.Popen(["mpirun -np 24 ./wrf.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["mpirun -np 2 ./wrf.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -182,10 +183,27 @@ if p.returncode != 0:
     log.close()
     sys.exit() #exit with return code 0
 
-##=============================================================================
-##        finish up
-##=============================================================================
-##cp files to output/
-##run WindNinja
-#
+#=============================================================================
+#        Run WindNinja
+#=============================================================================
+log.write('#=====================================================\n')
+log.write('#              Running WindNinja \n')
+log.write('#=====================================================\n')
+
+p = subprocess.Popen(["./runWindNinja.py"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+out, err = p.communicate()
+
+time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+log.write('%s:\n %s \n' % (time, err))
+log.write('%s:\n %s \n' % (time, out))
+
+if p.returncode != 0:
+    print "WindNinja: non-zero return code!"
+    print p.returncode
+    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    log.write('%s: WindNinja failed with return code %s \n' % (time, p.returncode))
+    log.write("!!! Error during WindNinja !!!")
+    log.close()
+    sys.exit() #exit with return code 0
+
 log.close()

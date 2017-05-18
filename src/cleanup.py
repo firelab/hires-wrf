@@ -6,6 +6,22 @@ import re
 dataDir = '/home/nwagenbrenner/nightly_wrf/data'
 wpsDir = '/home/nwagenbrenner/src/WRF/WPS'
 runDir = '/home/nwagenbrenner/src/WRF/WRFV3/run/'
+nightly_wrf = '/home/nwagenbrenner/nightly_wrf/'
+outDir = nightly_wrf + "output/"
+ninjaoutDir = outDir + "ninjaout/"
+
+#=============================================================================
+#        Clean up WindNinja output
+#=============================================================================
+for f in os.listdir(ninjaoutDir):
+    f_path = os.path.join(ninjaoutDir, f)
+    try:
+        if os.path.isfile(f_path):
+            os.unlink(f_path)
+    except Exception as e:
+        print(e)
+
+print 'WindNinja cleanup complete!'
 
 #=============================================================================
 #        Clean up HRRR
