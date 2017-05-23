@@ -12,8 +12,7 @@ date = datetime.datetime.now().strftime('%Y%m%d')
 #timeList = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
 #            '11', '12', '13', '14', '15', '16', '17', '18']
 
-#just 1300 MDT to 1600 MDT
-timeList = ['09', '10', '11', '12']
+timeList = ['08', '09', '10', '11', '12', '13', '14']
 
 for time in timeList:
     print 'Downloading t10z.wrfprsf%s.grib2' % time

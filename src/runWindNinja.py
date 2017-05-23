@@ -16,18 +16,25 @@ start_month = datetime.date.today().month
 start_day = datetime.date.today().day
 
 #copy wrfout file to output directory
-wrfoutSrc = RUN + ('wrfout_d01_%s-%02d-%s_19:00:00' % (start_year, start_month, start_day))
+wrfoutSrc = RUN + ('wrfout_d01_%s-%02d-%s_18:00:00' % (start_year, start_month, start_day))
 wrfoutDst = nightly_wrf + 'output/wrfout.nc'  
 shutil.copyfile(wrfoutSrc, wrfoutDst) 
 
-windninja = '/home/nwagenbrenner/src/windninja/build/src/cli/./WindNinja_cli '
 cfg = nightly_wrf + 'output/wrf_initialization.cfg'
 
-p = subprocess.Popen([windninja + cfg], shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["WindNinja_cli " + cfg], cwd = outDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
-
 print out
 print err
+
+if p.returncode != 0:
+    print "WindNinja: non-zero return code!"
+    print p.returncode
+    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    log.write('%s: WindNinja failed with return code %s \n' % (time, p.returncode))
+    log.write("!!! Error during WindNinja !!!")
+    log.close()
+    sys.exit() #exit with return code 0
 
 pattern = "WRF-SURFACE-"
 for f in os.listdir(outDir):

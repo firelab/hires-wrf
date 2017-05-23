@@ -11,16 +11,13 @@ RUN = '/home/nwagenbrenner/src/WRF/WRFV3/run/'
 namelistFile = RUN + "namelist.input"
 namelist = open(namelistFile, 'w')
 
-#today = datetime.datetime.utcnow().strftime('%Y-%m-%d')
-#tomorrow = (datetime.datetime.utcnow()+datetime.timedelta(hours=24)).strftime('%Y-%m-%d')
-
 start_year = datetime.date.today().year
 start_month = datetime.date.today().month
 start_day = datetime.date.today().day
 
-end_year = start_year
-end_month = start_month
-end_day = start_day
+end_year = (datetime.date.today() + datetime.timedelta(days=1)).year
+end_month = (datetime.date.today() + datetime.timedelta(days=1)).month
+end_day = (datetime.date.today() + datetime.timedelta(days=1)).day
 
 namelist.write(" &time_control\n")
 namelist.write(" run_days                     = 0\n")
@@ -30,13 +27,13 @@ namelist.write(" run_seconds                  = 0\n")
 namelist.write(" start_year                   = %s\n" % start_year)
 namelist.write(" start_month                  = %s\n" % start_month)
 namelist.write(" start_day                    = %s\n" % start_day)
-namelist.write(" start_hour                   = 19\n")
+namelist.write(" start_hour                   = 18\n")
 namelist.write(" start_minute                 = 0\n")
 namelist.write(" start_second                 = 0\n")
 namelist.write(" end_year                     = %s\n" % end_year)
 namelist.write(" end_month                    = %s\n" % end_month)
 namelist.write(" end_day                      = %s\n" % end_day)
-namelist.write(" end_hour                     = 22\n")
+namelist.write(" end_hour                     = 00\n")
 namelist.write(" end_minute                   = 0\n")
 namelist.write(" end_second                   = 0\n")
 namelist.write(" interval_seconds             = 3600\n")
