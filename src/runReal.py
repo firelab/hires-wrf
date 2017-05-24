@@ -51,7 +51,7 @@ namelist.write(" /\n")
 namelist.write("\n")
 
 namelist.write(" &domains\n")
-namelist.write(" time_step                    = 15\n")
+namelist.write(" time_step                    = 5\n")
 namelist.write(" time_step_fract_num          = 0\n") 
 namelist.write(" time_step_fract_den          = 1\n") 
 namelist.write(" max_dom                      = 1\n") 
