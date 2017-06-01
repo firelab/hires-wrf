@@ -16,7 +16,7 @@ start_month = datetime.date.today().month
 start_day = datetime.date.today().day
 
 #copy wrfout file to output directory
-wrfoutSrc = RUN + ('wrfout_d01_%s-%02d-%s_18:00:00' % (start_year, start_month, start_day))
+wrfoutSrc = RUN + ('wrfout_d01_%s-%02d-%02d_18:00:00' % (start_year, start_month, start_day))
 wrfoutDst = nightly_wrf + 'output/wrfout.nc'  
 shutil.copyfile(wrfoutSrc, wrfoutDst) 
 
