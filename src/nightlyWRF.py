@@ -206,4 +206,28 @@ if p.returncode != 0:
     log.close()
     sys.exit() #exit with return code 0
 
+#=============================================================================
+#        Generate graphics
+#=============================================================================
+log.write('#=====================================================\n')
+log.write('#              Generating graphics \n')
+log.write('#=====================================================\n')
+
+p = subprocess.Popen(["/home/nwagenbrenner/nightly_wrf/output/graphics/./plot_wrfout.R"],
+        cwd = nightly_wrf + "output/graphics", shell = True, stdout=subprocess.PIPE)
+out, err = p.communicate()
+
+time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+log.write('%s:\n %s \n' % (time, err))
+log.write('%s:\n %s \n' % (time, out))
+
+if p.returncode != 0:
+    print "plot_wrfout.R: non-zero return code!"
+    print p.returncode
+    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    log.write('%s: plot_wrfout.R failed with return code %s \n' % (time, p.returncode))
+    log.write("!!! Error during plot_wrf.R !!!")
+    log.close()
+    sys.exit() #exit with return code 0
+
 log.close()
