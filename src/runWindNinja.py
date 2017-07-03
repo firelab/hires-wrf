@@ -20,9 +20,7 @@ wrfoutSrc = RUN + ('wrfout_d01_%s-%02d-%02d_18:00:00' % (start_year, start_month
 wrfoutDst = nightly_wrf + 'output/wrfout.nc'  
 shutil.copyfile(wrfoutSrc, wrfoutDst) 
 
-cfg = nightly_wrf + 'output/wrf_initialization.cfg'
-
-p = subprocess.Popen(["WindNinja_cli " + cfg], cwd = outDir, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["/home/nwagenbrenner/nightly_wrf/./runWN.sh"], cwd = outDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 print out
 print err
@@ -30,11 +28,6 @@ print err
 if p.returncode != 0:
     print "WindNinja: non-zero return code!"
     print p.returncode
-    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    log.write('%s: WindNinja failed with return code %s \n' % (time, p.returncode))
-    log.write("!!! Error during WindNinja !!!")
-    log.close()
-    sys.exit() #exit with return code 0
 
 pattern = "WRF-SURFACE-"
 for f in os.listdir(outDir):
