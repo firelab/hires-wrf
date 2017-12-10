@@ -1,0 +1,412 @@
+<html>
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+<meta http-equiv="Cache-Control" CONTENT="no-cache">
+<meta http-equiv="Pragma" CONTENT="no-cache">
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<body onunload="">
+<head>
+	<title>WRF</title>
+	<link rel="stylesheet" href="/leaflet/dist/leaflet.css" />
+	<script src="/leaflet/dist/leaflet.js"></script>
+	<script src="/leaflet-plugins/layer/vector/KML.js"></script>
+</head>
+<style>
+	#infobox{
+	  position: absolute;
+	  top: 1px;
+	  left: 10px;
+	  font-family: 'arial', 'sans-serif';
+	  font-size: 14px;
+	  background-color: white;
+	  border: 1px solid gray;
+	  padding: 0px 0px;
+	  /*position: absolute;*/
+	  /*z-index:10;*/
+	}
+	#infobox2{
+	  position: absolute;
+	  top: 1px;
+	  right: 10px;
+	  font-family: 'arial', 'sans-serif';
+	  font-size: 14px;
+	  background-color: white;
+	  border: 1px solid gray;
+          width: 300px;
+					height: 64px;
+	  padding: 2px 10px;
+          text-align: left;
+	  /*position: absolute;*/
+	  /*z-index:10;*/
+	}
+	#infobox3{
+		position: absolute;
+		top: 1px;
+		left: 420px;
+		font-family: 'arial', 'sans-serif';
+		font-size: 14px;
+		background-color: white;
+		border: 1px solid gray;
+					width: 420px;
+					height: 64px;
+		padding: 2px 10px;
+					text-align: left;
+		/*position: absolute;*/
+		/*z-index:10;*/
+	}
+	#wrfCheckboxes {
+		position: absolute;
+		top: 110px;
+		right: 10px;
+		font-family: 'arial', 'sans-serif';
+		font-size: 14px;
+		background-color: white;
+		border: 1px solid gray;
+		padding: 5px 10px;
+		/*border-radius: 10px;*/
+	 }
+	#map {
+	  top: 70px;
+	  width: 100%;
+	  height: 90%;
+	  z-index:0;
+	}
+	#gallery{
+	     position: absolute;
+	     top: 175px;
+	     left: 10px;
+	     font-family: 'arial', 'sans-serif';
+	     font-size: 14px;
+	     background-color: white;
+	     border: 1px solid gray;
+	     padding: 0px 0px;
+	     /*width: 200px;
+	     height: 270px;*/
+	     background: #000;
+	     z-index: 150000000;
+	     width: 150px;
+	     height: 250px;
+	   }
+	.galleria-info{
+	width:170px;
+	height:5px;}
+	#tLegend{
+		position:absolute;
+		top:450px;
+		left:10px;
+		z-index: 150000000;
+	    	background: #000;
+	     	font-family: 'arial', 'sans-serif';
+	     	font-size: 12px;
+		color: white;
+		width: 65px;
+		height: 200px;
+		/*visibility: "visible";*/
+	}
+	#lButton{
+	    position:absolute;
+	    top:80px;
+	    right:10px;
+	    z-index: 150000000;
+	}
+	#spdButton{
+	    position:absolute;
+	    top:80px;
+	    left:50px;
+	    z-index: 150000000;
+	}
+	#tmpButton{
+	    position:absolute;
+	    top:110px;
+	    left:50px;
+	    z-index: 150000000;
+	}
+	#fLab{
+		position:absolute;
+		bottom:10px;
+		left:10px;
+		z-index: 150000000;
+	}
+	#fLabLink{
+		position:absolute;
+		bottom:-15px;
+		left:10px;
+		z-index: 150000000;
+	}
+	img.fImg{
+		height:100px;
+	  width:100px;
+	}
+	img.tImg{
+		height:175px;
+		width:90px;
+	}
+
+	.leaflet-control-layers-toggle:after{
+	    /*content:"Wind Layers";*/
+	    color:#000 ;
+	}
+	.leaflet-control-layers-toggle{
+	    width:auto;
+	    background-position:3px 50% ;
+	    padding:3px;
+	    padding-left:36px;
+	    text-decoration:none;
+	    line-height:36px;
+
+}
+</style>
+<script src="/js_files/jquery.js"></script>
+<body>
+	<div id="map"></div>
+	<script type='text/javascript'>
+		var map = new L.Map('map', {center: new L.LatLng(58.4, -43.0), zoom: 2});
+//		var osm = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+ 	// 	var osm = new L.TileLayer('https://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=4d0ff2c6153149d9a08fb47a2caf50ae' );
+		var osm = new L.TileLayer('http://topofire.dbs.umt.edu/topofire_v2/data/osmUShydro/{z}/{x}/{y}.png')
+		// var wrf0 = new L.KML("/ninja/wrfSim/wrf/wrf_1100.kml", {async: true});
+		var wrf1 = new L.KML("/ninja/wrfSim/wrf/wrf_1200.kml", {async: true});
+		var wrf2 = new L.KML("/ninja/wrfSim/wrf/wrf_1300.kml", {async: true});
+		var wrf3 = new L.KML("/ninja/wrfSim/wrf/wrf_1400.kml", {async: true});
+		var wrf4 = new L.KML("/ninja/wrfSim/wrf/wrf_1500.kml", {async: true});
+		var wrf5 = new L.KML("/ninja/wrfSim/wrf/wrf_1600.kml", {async: true});
+		var wrf6 = new L.KML("/ninja/wrfSim/wrf/wrf_1700.kml", {async: true});
+		var wrf7 = new L.KML("/ninja/wrfSim/wrf/wrf_1800.kml", {async: true});
+		var wrf8 = new L.KML("/ninja/wrfSim/wrf/wrf_1900.kml", {async: true});
+		var wrf9 = new L.KML("/ninja/wrfSim/wrf/wrf_2000.kml", {async: true});
+		var wrf10 = new L.KML("/ninja/wrfSim/wrf/wrf_2100.kml", {async: true});
+
+  //  var layer0 = new L.KML("/ninja/wrfSim/kml/_110.kml", {async: true});
+  // var lolo = new L.KML("/ninja/wrfSim/8-28FP/lolo.kml",{async:true});
+
+    var raws  = new L.KML("/ninja/wrfSim/raws_data/raws.kml",{async:true});
+
+    var temp1  = new L.KML("/ninja/wrfSim/temperature_kml/layer.1.kml",{async:true});
+    var temp2  = new L.KML("/ninja/wrfSim/temperature_kml/layer.2.kml",{async:true});
+    var temp3  = new L.KML("/ninja/wrfSim/temperature_kml/layer.3.kml",{async:true});
+    var temp4  = new L.KML("/ninja/wrfSim/temperature_kml/layer.4.kml",{async:true});
+    var temp5  = new L.KML("/ninja/wrfSim/temperature_kml/layer.5.kml",{async:true});
+    var temp6  = new L.KML("/ninja/wrfSim/temperature_kml/layer.6.kml",{async:true});
+    var temp7  = new L.KML("/ninja/wrfSim/temperature_kml/layer.7.kml",{async:true});
+		var temp8  = new L.KML("/ninja/wrfSim/temperature_kml/layer.8.kml",{async:true});
+		var temp9  = new L.KML("/ninja/wrfSim/temperature_kml/layer.9.kml",{async:true});
+		var temp10  = new L.KML("/ninja/wrfSim/temperature_kml/layer.10.kml",{async:true});
+
+		L.control.scale({position:'bottomright'}).addTo(map)
+
+    wrf1.on("loaded",function(e){
+			map.fitBounds(e.target.getBounds());
+			});
+
+    map.addLayer(wrf1);
+		// map.addLayer(layer0)
+    // map.addLayer(lolo);
+
+    map.addLayer(osm);
+
+		function toggleLayer(layer){
+			if (map.hasLayer(layer)==true){
+				map.removeLayer(layer);
+		}
+			else{
+				map.addLayer(layer);
+			}
+		}
+
+	</script>
+	<div id="gallery">
+	<!DOCTYPE html>
+	<html>
+	  	<head>
+	    <script src="/js_files/jquery.js"></script>
+	    <script src="/js_files/galleria.min.js"></script>
+	    <style>
+	    	#galleria{ width: 170px; height: 270px; background: #000; top:0;right:0;bottom:0;left:0; }
+	    	body .galleria-bar{display:none}
+	    	body .galleria-stage{bottom:0}
+  		/*body .galleria-stage{top:0;right:0;bottom:0;left:0;}*/
+		  </style>
+  	</head>
+		<body>
+			<div id="galleria">
+				<!-- <img src="/ninja/wrfSim/wrf_key/1100.bmp",
+				data-big="/ninja/wrfSim/wrf_key/1100.bmp",
+				data-title="1100",
+				data-description="Wind 1100"> -->
+				<img src="/ninja/wrfSim/wrf_key/1200.bmp",
+				data-big="/ninja/wrfSim/wrf_key/1200.bmp",
+				data-title="1200",
+				data-description="Wind 1200">
+				<img src="/ninja/wrfSim/wrf_key/1300.bmp",
+				data-big="/ninja/wrfSim/wrf_key/1300.bmp",
+				data-title="1300",
+				data-description="Wind 1300">
+				<img src="/ninja/wrfSim/wrf_key/1400.bmp",
+				data-big="/ninja/wrfSim/wrf_key/1400.bmp",
+				data-title="1400",
+				data-description="Wind 1400">
+				<img src="/ninja/wrfSim/wrf_key/1500.bmp",
+				data-big="/ninja/wrfSim/wrf_key/1500.bmp",
+				data-title="1500",
+				data-description="Wind 1500">
+				<img src="/ninja/wrfSim/wrf_key/1600.bmp",
+				data-big="/ninja/wrfSim/wrf_key/1600.bmp",
+				data-title="1600",
+				data-description="Wind 1600">
+				<!-- <img src="/ninja/wrfSim/wrf_key/1700.bmp",
+				data-big="/ninja/wrfSim/wrf_key/1700.bmp",
+				data-title="1700",
+				data-description="Wind 1700">-->
+				<img src="/ninja/wrfSim/wrf_key/1700.bmp",
+				data-big="/ninja/wrfSim/wrf_key/1700.bmp",
+				data-title="1700",
+				data-description="Wind 1700">
+				<img src="/ninja/wrfSim/wrf_key/1800.bmp",
+				data-big="/ninja/wrfSim/wrf_key/1800.bmp",
+				data-title="1800",
+				data-description="Wind 1800">
+				<img src="/ninja/wrfSim/wrf_key/1900.bmp",
+				data-big="/ninja/wrfSim/wrf_key/1900.bmp",
+				data-title="1900",
+				data-description="Wind 1900">
+				<img src="/ninja/wrfSim/wrf_key/2000.bmp",
+				data-big="/ninja/wrfSim/wrf_key/2000.bmp",
+				data-title="2000",
+				data-description="Wind 2000">
+				<img src="/ninja/wrfSim/wrf_key/2100.bmp",
+				data-big="/ninja/wrfSim/wrf_key/2100.bmp",
+				data-title="2100",
+				data-description="Wind 2100">
+			</div>
+		  <script>
+		//               Galleria.loadTheme('https://cdnjs.cloudflare.com/ajax/libs/galleria/1.2.9/themes/classic/galleria.classic.min.js');
+		    Galleria.loadTheme('/js_files/galleria.classic.min.js');
+		      Galleria.configure({
+		          thumbnails: false,
+		          carousel: false,
+		          _toggleInfo:false,
+		          // showInfo: true,
+		            // showCounter: false,
+		          // showImagenav: false,
+		          // thumbFit: false,
+		          // showCounter: false,
+		          // thumbMargin: 0,
+		          // imageCrop: "height"
+		        });
+
+		      Galleria.run('#galleria');
+			</script>
+  	</body>
+	</html>
+<script>
+  function reloadFunc(){
+  location.reload();
+  document.getElementById('infobox2').contentWindow.location.reload();
+  document.getElementById('infobox').contentWindow.location.reload();
+  document.getElementById('map').contentWindow.location.reload();
+  }
+//             $(function showSpdLegend(){
+//             $("spdButton").click(showspdLegend(){
+//                 $("gallery").toggle();
+//                 });
+//             });
+</script>
+<script>
+	function toggle(item) {
+	    var x = document.getElementById(item);
+	    if (x.style.display === 'none') {
+	        x.style.display = 'block';
+	    } else {
+	        x.style.display = 'none';
+	    }
+	}
+	function enableItem(item){
+		var x = document.getElementById(item);
+		x.style.display='block';
+	}
+	function anyCheckbox(){
+	var inputElements = document.getElementsByTagName("input");
+	for (var i = 0; i < inputElements.length; i++)
+	    if (inputElements[i].type == "checkbox")
+	        if (inputElements[i].checked)
+	            return true;
+	return false;
+	}
+	function toggleCzech(){
+		if (anyCheckbox()===true){
+			toggle("gallery")
+		}
+		if (anyCheckbox()===false){
+
+		}
+	}
+	function disclaimer(){
+		alert("NOTICE:\nThis is a research prototype that is still undergoing changes. We do not guarantee its accuracy or stability.")
+	}
+</script>
+</div>
+		<div id="wrfCheckboxes">
+			<!-- </>Fire eters<br /> -->
+			</><b>Additional Layers</b><br />
+			<!-- <input type=checkbox checked=checked id="layer0" onclick=toggleLayer(lolo) />Lolo Peak Fire Perimeter<br /> -->
+			<input type=checkbox id="layer0" onclick=toggleLayer(raws) />RAWS Weather<br />
+			<!-- </><strong><ins>WRF Layers</ins></strong><br /> -->
+			</><b>Wind Vectors</b><br />
+			<!-- </><hr /> -->
+			<input type=checkbox checked=checked id="layer0" onclick=toggle("gallery") />Wind Legend<br />
+			<input type=checkbox checked=checked id="layer0" onclick=toggleLayer(wrf1) />10m Wind 1200<br />
+			<!-- <input type=checkbox id="layer0" onclick=toggleLayer(wrf1) />10m Wind 1200<br /> -->
+			<input type=checkbox id="layer0" onclick=toggleLayer(wrf2) />10m Wind 1300<br />
+			<input type=checkbox id="layer0" onclick=toggleLayer(wrf3) />10m Wind 1400<br />
+			<input type=checkbox id="layer0" onclick=toggleLayer(wrf4) />10m Wind 1500<br />
+			<input type=checkbox id="layer0" onclick=toggleLayer(wrf5) />10m Wind 1600<br />
+			<input type=checkbox id="layer0" onclick=toggleLayer(wrf6) />10m Wind 1700<br />
+			<input type=checkbox id="layer0" onclick=toggleLayer(wrf7) />10m Wind 1800<br />
+			<input type=checkbox id="layer0" onclick=toggleLayer(wrf8) />10m Wind 1900<br />
+			<input type=checkbox id="layer0" onclick=toggleLayer(wrf9) />10m Wind 2000<br />
+			<input type=checkbox id="layer0" onclick=toggleLayer(wrf10) />10m Wind 2100<br />
+
+
+                        <!--	</><b>Temperature Grids</b><br /> -->
+		<!--	<!-- </><hr /> -->
+                <!--	<input type=checkbox id="layer0" onclick=toggle("tLegend") />T Legend<br /> -->
+		<!--	<input type=checkbox id="layer0" onclick=toggleLayer(temp1) />2m T 1200<br /> -->
+		<!--	<input type=checkbox id="layer0" onclick=toggleLayer(temp2) />2m T 1300<br /> -->
+		<!--	<input type=checkbox id="layer0" onclick=toggleLayer(temp3) />2m T 1400<br /> -->
+		<!--	<input type=checkbox id="layer0" onclick=toggleLayer(temp4) />2m T 1500<br /> -->
+		<!--	<input type=checkbox id="layer0" onclick=toggleLayer(temp5) />2m T 1600<br /> -->
+		<!--	<input type=checkbox id="layer0" onclick=toggleLayer(temp6) />2m T 1700<br /> -->
+		<!--	<input type=checkbox id="layer0" onclick=toggleLayer(temp7) />2m T 1800<br /> -->
+		<!--	<input type=checkbox id="layer0" onclick=toggleLayer(temp8) />2m T 1900<br /> -->
+		<!--	<input type=checkbox id="layer0" onclick=toggleLayer(temp9) />2m T 2000<br /> -->
+		<!--	<input type=checkbox id="layer0" onclick=toggleLayer(temp10) />2m T 2100<br /> -->
+
+		</div>
+    <div id=tLegend style="display:none"><p>T (F)</p><img class=tImg src=/ninja/wrfSim/temperature_kml/obj_legend.png></div>
+    <div id="infobox"><iframe src="/ninja/wrfSim/wxLog.txt" style="background: #FFFFFF;" height="64"  width="400"></iframe></div>
+<!--     <div id="infobox2"><iframe src="/old.wrfSim/logs/info.txt" style="background: #FFFFFF;" height="65"  width="600"></iframe></div> -->
+    <div id ="infobox2">This page updates every day at 0600 MST<br>
+			RAWS data is updated hourly<br>
+			<a href=https://weather.firelab.org/ninja/wrfSim/ninjaout/ target="_blank">Download WRF SHP and KMZ files</a>
+	</div>
+		<div id="infobox3">NOTICE:<br>This is a research prototype that is still undergoing changes. We do not guarantee its accuracy or stability.</div>
+<!--     <div id ="fBut"><button onclick="reloadFunc()">Reload Page</button></div> -->
+    <!-- <div id="spdButton"><button onclick=toggle("gallery")>Toggle Spd Legend</button></div> -->
+    <!-- <div id="tmpButton"><button onclick=toggle("tLegend")>Toggle T Legend</button></div> -->
+		<div id="lButton"><button onclick=toggle("wrfCheckboxes")>Show/Hide Layers</button></div>
+		<div id=fLab><img class="fImg" src="/ninja/fwas_images/3028309.png" alt "firelab"></div>
+		<div id=fLabLink><p>Questions/Contact:&nbsp;&nbsp;<a href="mailto:nwagenbrenner@fs.fed.us" target="_blank">nwagenbrenner@fs.fed.us</a>&nbsp;&nbsp;<a href="mailto:tfinney@fs.fed.us" target="_blank">tfinney@fs.fed.us</a></p></div>
+		<!-- <body onload="loadFunc()" style="margin:0;"> -->
+		<!-- <div id="loader"></div> -->
+<!-- <img src="/leaflet/src/images/layers.svg"> -->
+
+<!--<hr>-->
+
+
+	</body>
+</html>
