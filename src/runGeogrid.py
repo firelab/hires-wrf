@@ -3,7 +3,7 @@
 import subprocess
 import datetime
 
-WPS = '/home/nwagenbrenner/src/WRF/WPS/'
+WPS = '/home/natalie/src/wrf/WPS/'
 
 #=============================================================================
 #        Edit namelist.wps
@@ -24,7 +24,7 @@ namelist.write("interval_seconds = 3600\n")
 namelist.write("io_form_geogrid = 2,\n")
 namelist.write("/\n")
 namelist.write("\n")
-#currently set to MSO domain
+#currently set to Goose Fire domain
 namelist.write("&geogrid\n")
 namelist.write("parent_id         =   1,\n")
 namelist.write("parent_grid_ratio =   1,\n") 
@@ -36,12 +36,12 @@ namelist.write("geog_data_res = 'default',\n")
 namelist.write("dx = 1000,\n")
 namelist.write("dy = 1000,\n")
 namelist.write("map_proj = 'lambert',\n")
-namelist.write("ref_lat   =  46.88,\n")
-namelist.write("ref_lon   = -113.99,\n")
+namelist.write("ref_lat   =  44.73,\n")
+namelist.write("ref_lon   = -111.60,\n")
 namelist.write("truelat1  =  30.0,\n")
 namelist.write("truelat2  =  60.0,\n")
-namelist.write("stand_lon = -113.99,\n")
-namelist.write("geog_data_path = '/home/nwagenbrenner/src/WRF/WPS_GEOG/WPS_GEOG'\n")
+namelist.write("stand_lon = -111.60,\n")
+namelist.write("geog_data_path = '/home/natalie/src/wrf/WPS_GEOG/WPS_GEOG'\n")
 namelist.write("/\n")
 namelist.write("\n")
 namelist.write("&ungrib\n")

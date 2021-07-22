@@ -5,7 +5,7 @@ import subprocess
 
 # Fetches all 18 timesteps in forecast initialized on the current day at 1000 UTC (0400 MDT)
 
-dataDir = '/home/nwagenbrenner/nightly_wrf/data'
+dataDir = '/media/natalie/ExtraDrive2/nightly_wrf/data'
 
 date = datetime.datetime.now().strftime('%Y%m%d')
 
@@ -16,7 +16,7 @@ timeList = ['08', '09', '10', '11', '12', '13', '14']
 
 for time in timeList:
     print 'Downloading t10z.wrfprsf%s.grib2' % time
-    dataFile = 'http://nomads.ncep.noaa.gov/pub/data/nccf/com/hrrr/prod/hrrr.%s/hrrr.t10z.wrfprsf%s.grib2'\
+    dataFile = 'http://nomads.ncep.noaa.gov/pub/data/nccf/com/hrrr/prod/hrrr.%s/conus/hrrr.t10z.wrfprsf%s.grib2'\
                 % (date, time)
     p = subprocess.Popen(["wget %s" % dataFile], cwd = dataDir, shell = True, stdout=subprocess.PIPE)
     out, err = p.communicate()

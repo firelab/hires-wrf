@@ -3,8 +3,8 @@
 import subprocess
 import datetime
 
-WPS = '/home/nwagenbrenner/src/WRF/WPS/'
-dataDir = '/home/nwagenbrenner/nightly_wrf/data/'
+WPS = '/home/natalie/src/wrf/WPS/'
+dataDir = '/media/natalie/ExtraDrive2/nightly_wrf/data/'
 
 #=============================================================================
 #        Link to wx data

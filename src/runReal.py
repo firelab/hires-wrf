@@ -3,7 +3,7 @@
 import subprocess
 import datetime
 
-RUN = '/home/nwagenbrenner/src/WRF/WRFV3/run/'
+RUN = '/home/natalie/src/wrf/WRF/run/'
 
 #=============================================================================
 #        Edit namelist.input

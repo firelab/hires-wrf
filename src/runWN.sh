@@ -2,6 +2,6 @@
 
 echo "Running WindNinja..."
 
-source /home/nwagenbrenner/.bashrc
+source /home/natalie/.bashrc
 
-WindNinja_cli /home/nwagenbrenner/nightly_wrf/output/wrf_initialization.cfg
+WindNinja_cli /media/natalie/ExtraDrive2/nightly_wrf/output/wrf_initialization.cfg

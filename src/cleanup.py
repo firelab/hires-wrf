@@ -3,10 +3,10 @@
 import os
 import re
 
-dataDir = '/home/nwagenbrenner/nightly_wrf/data'
-wpsDir = '/home/nwagenbrenner/src/WRF/WPS'
-runDir = '/home/nwagenbrenner/src/WRF/WRFV3/run/'
-nightly_wrf = '/home/nwagenbrenner/nightly_wrf/'
+dataDir = '/media/natalie/ExtraDrive2/nightly_wrf/data'
+wpsDir = '/home/natalie/src/wrf/WPS'
+runDir = '/home/natalie/src/wrf/WRF/run/'
+nightly_wrf = '/media/natalie/ExtraDrive2/nightly_wrf/'
 outDir = nightly_wrf + "output/"
 ninjaoutDir = outDir + "ninjaout/"
 
