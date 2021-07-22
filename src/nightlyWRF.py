@@ -299,8 +299,20 @@ wxLog.write('All timesteps are in local time (MDT)\n')
 wxLog.write('Simulation valid for: %s.\n' % today)
 wxLog.close()
 
+#rename back to .kmz for file transfer
+pattern = ".zip"
+for f in os.listdir(ninjaoutDir):
+    if re.search(pattern, f): 
+        f_path = os.path.join(ninjaoutDir, f)
+        try:
+            if os.path.isfile(f_path):
+                base = os.path.splitext(f_path)[0]
+                os.rename(f_path, base + '.kmz')
+        except Exception as e:
+            print(e)
+
 #copy the WRF-SURFACE*.kml, WRF-SURFACE*.bmp, timestamp file, and the WindNinja output files
-p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./copy_files.sh"], cwd = nightlyWrf, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./copy_files.sh"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 print out
 print err
