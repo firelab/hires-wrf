@@ -4,6 +4,7 @@ import subprocess
 import sys
 import shutil
 import os
+from os.path import basename
 import re
 import zipfile
 
@@ -16,6 +17,12 @@ WPS = '/home/natalie/src/wrf/WPS/'
 RUN = '/home/natalie/src/wrf/WRF/run/'
 outDir = nightly_wrf + "output/"
 ninjaoutDir = outDir + "ninjaout/"
+
+#=============================================================================
+#        Setup environment
+#=============================================================================
+p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./setEnv.sh"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+out, err = p.communicate()
 
 #=============================================================================
 #        Open a log file
@@ -106,18 +113,17 @@ log.write('#=====================================================\n')
 p = subprocess.Popen(["./runUngrib.py"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
-time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-log.write('%s:\n %s \n' % (time, err))
-log.write('%s:\n %s \n' % (time, out))
-
 if p.returncode != 0:
     print "runUngrib.py: non-zero return code!"
     print p.returncode
     time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log.write('%s:\n runUngrib.py failed with return code %s \n' % (time, p.returncode))
-    log.write("!!! Error during runUngrig !!!")
+    log.write("!!! Error during runUngrib !!!")
     log.close()
     sys.exit() #exit with return code 0
+
+p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./test.sh"], cwd = WPS, shell = True, stdout=subprocess.PIPE)
+out, err = p.communicate()
 
 #=============================================================================
 #        Run metgrid.exe
@@ -172,7 +178,7 @@ log.write('#=====================================================\n')
 log.write('#              Running wrf.exe \n')
 log.write('#=====================================================\n')
 
-p = subprocess.Popen(["mpirun -np 2 ./wrf.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["mpirun -np 16 ./wrf.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -211,31 +217,31 @@ if p.returncode != 0:
     log.close()
     sys.exit() #exit with return code 0
 
-#=============================================================================
-#        Generate graphics
-#        Currently only used to plot 2-T
-#=============================================================================
-#log.write('#=====================================================\n')
-#log.write('#              Generating graphics \n')
-#log.write('#=====================================================\n')
+##=============================================================================
+##        Generate graphics
+##        Currently only used to plot 2-T
+##=============================================================================
+##log.write('#=====================================================\n')
+##log.write('#              Generating graphics \n')
+##log.write('#=====================================================\n')
+##
+##p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/output/graphics/./plot_wrfout.R"],
+##        cwd = nightly_wrf + "output/graphics", shell = True, stdout=subprocess.PIPE)
+##out, err = p.communicate()
+##
+##time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+##log.write('%s:\n %s \n' % (time, err))
+##log.write('%s:\n %s \n' % (time, out))
+##
+##if p.returncode != 0:
+##    print "plot_wrfout.R: non-zero return code!"
+##    print p.returncode
+##    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+##    log.write('%s: plot_wrfout.R failed with return code %s \n' % (time, p.returncode))
+##    log.write("!!! Error during plot_wrf.R !!!")
+##    log.close()
+##    sys.exit() #exit with return code 0
 #
-#p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/output/graphics/./plot_wrfout.R"],
-#        cwd = nightly_wrf + "output/graphics", shell = True, stdout=subprocess.PIPE)
-#out, err = p.communicate()
-#
-#time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#log.write('%s:\n %s \n' % (time, err))
-#log.write('%s:\n %s \n' % (time, out))
-#
-#if p.returncode != 0:
-#    print "plot_wrfout.R: non-zero return code!"
-#    print p.returncode
-#    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#    log.write('%s: plot_wrfout.R failed with return code %s \n' % (time, p.returncode))
-#    log.write("!!! Error during plot_wrf.R !!!")
-#    log.close()
-#    sys.exit() #exit with return code 0
-
 #=============================================================================
 #        Copy files for display on breezy
 #=============================================================================
@@ -295,7 +301,7 @@ today = datetime.datetime.now().strftime('%Y-%m-%d')
 wxLogFile = ninjaoutDir + 'wxLog.txt'
 wxLog = open(wxLogFile, 'w')
 wxLog.write('High-Resolution WRF\n')
-wxLog.write('All timesteps are in local time (MDT)\n')
+wxLog.write('All timesteps are in local time.\n')
 wxLog.write('Simulation valid for: %s.\n' % today)
 wxLog.close()
 
@@ -310,6 +316,82 @@ for f in os.listdir(ninjaoutDir):
                 os.rename(f_path, base + '.kmz')
         except Exception as e:
             print(e)
+
+#####-------- Zip things up for easier transfer --------------#############
+#zip the kmz files into an archive to copy to ninjastorm
+pattern = ".kmz"
+with zipfile.ZipFile((os.path.join(ninjaoutDir, "kmz.zip")), 'w') as zip_ref:
+    for f in os.listdir(ninjaoutDir):
+        if re.search(pattern, f): 
+            f_path = os.path.join(ninjaoutDir, f)
+            try:
+                if os.path.isfile(f_path):
+                    zip_ref.write(f_path, basename(f_path))
+            except Exception as e:
+                print(e)
+zip_ref.close()
+
+#zip the raster files into an archive to copy to breezy
+pattern = ".asc"
+with zipfile.ZipFile((os.path.join(ninjaoutDir, "raster.zip")), 'w') as zip_ref:
+    for f in os.listdir(ninjaoutDir):
+        if re.search(pattern, f): 
+            f_path = os.path.join(ninjaoutDir, f)
+            try:
+                if os.path.isfile(f_path):
+                    zip_ref.write(f_path, basename(f_path))
+            except Exception as e:
+                print(e)
+    pattern = ".prj"
+    for f in os.listdir(ninjaoutDir):
+        if re.search(pattern, f): 
+            f_path = os.path.join(ninjaoutDir, f)
+            try:
+                if os.path.isfile(f_path):
+                    zip_ref.write(f_path, basename(f_path))
+            except Exception as e:
+                print(e)
+zip_ref.close()
+
+#zip the shapefile files into an archive to copy to breezy
+pattern = ".shp"
+with zipfile.ZipFile((os.path.join(ninjaoutDir, "shapefile.zip")), 'w') as zip_ref:
+    for f in os.listdir(ninjaoutDir):
+        if re.search(pattern, f): 
+            f_path = os.path.join(ninjaoutDir, f)
+            try:
+                if os.path.isfile(f_path):
+                    zip_ref.write(f_path, basename(f_path))
+            except Exception as e:
+                print(e)
+    pattern = ".prj"
+    for f in os.listdir(ninjaoutDir):
+        if re.search(pattern, f): 
+            f_path = os.path.join(ninjaoutDir, f)
+            try:
+                if os.path.isfile(f_path):
+                    zip_ref.write(f_path, basename(f_path))
+            except Exception as e:
+                print(e)
+    pattern = ".shx"
+    for f in os.listdir(ninjaoutDir):
+        if re.search(pattern, f): 
+            f_path = os.path.join(ninjaoutDir, f)
+            try:
+                if os.path.isfile(f_path):
+                    zip_ref.write(f_path, basename(f_path))
+            except Exception as e:
+                print(e)
+    pattern = ".dbf"
+    for f in os.listdir(ninjaoutDir):
+        if re.search(pattern, f): 
+            f_path = os.path.join(ninjaoutDir, f)
+            try:
+                if os.path.isfile(f_path):
+                    zip_ref.write(f_path, basename(f_path))
+            except Exception as e:
+                print(e)
+zip_ref.close()
 
 #copy the WRF-SURFACE*.kml, WRF-SURFACE*.bmp, timestamp file, and the WindNinja output files
 p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./copy_files.sh"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)

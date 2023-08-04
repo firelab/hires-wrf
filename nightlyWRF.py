@@ -113,18 +113,17 @@ log.write('#=====================================================\n')
 p = subprocess.Popen(["./runUngrib.py"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
-time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-log.write('%s:\n %s \n' % (time, err))
-log.write('%s:\n %s \n' % (time, out))
-
 if p.returncode != 0:
     print "runUngrib.py: non-zero return code!"
     print p.returncode
     time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log.write('%s:\n runUngrib.py failed with return code %s \n' % (time, p.returncode))
-    log.write("!!! Error during runUngrig !!!")
+    log.write("!!! Error during runUngrib !!!")
     log.close()
     sys.exit() #exit with return code 0
+
+p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./test.sh"], cwd = WPS, shell = True, stdout=subprocess.PIPE)
+out, err = p.communicate()
 
 #=============================================================================
 #        Run metgrid.exe
@@ -179,7 +178,7 @@ log.write('#=====================================================\n')
 log.write('#              Running wrf.exe \n')
 log.write('#=====================================================\n')
 
-p = subprocess.Popen(["mpirun -np 2 ./wrf.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["mpirun -np 16 ./wrf.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -218,31 +217,31 @@ if p.returncode != 0:
     log.close()
     sys.exit() #exit with return code 0
 
-#=============================================================================
-#        Generate graphics
-#        Currently only used to plot 2-T
-#=============================================================================
-#log.write('#=====================================================\n')
-#log.write('#              Generating graphics \n')
-#log.write('#=====================================================\n')
+##=============================================================================
+##        Generate graphics
+##        Currently only used to plot 2-T
+##=============================================================================
+##log.write('#=====================================================\n')
+##log.write('#              Generating graphics \n')
+##log.write('#=====================================================\n')
+##
+##p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/output/graphics/./plot_wrfout.R"],
+##        cwd = nightly_wrf + "output/graphics", shell = True, stdout=subprocess.PIPE)
+##out, err = p.communicate()
+##
+##time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+##log.write('%s:\n %s \n' % (time, err))
+##log.write('%s:\n %s \n' % (time, out))
+##
+##if p.returncode != 0:
+##    print "plot_wrfout.R: non-zero return code!"
+##    print p.returncode
+##    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+##    log.write('%s: plot_wrfout.R failed with return code %s \n' % (time, p.returncode))
+##    log.write("!!! Error during plot_wrf.R !!!")
+##    log.close()
+##    sys.exit() #exit with return code 0
 #
-#p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/output/graphics/./plot_wrfout.R"],
-#        cwd = nightly_wrf + "output/graphics", shell = True, stdout=subprocess.PIPE)
-#out, err = p.communicate()
-#
-#time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#log.write('%s:\n %s \n' % (time, err))
-#log.write('%s:\n %s \n' % (time, out))
-#
-#if p.returncode != 0:
-#    print "plot_wrfout.R: non-zero return code!"
-#    print p.returncode
-#    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#    log.write('%s: plot_wrfout.R failed with return code %s \n' % (time, p.returncode))
-#    log.write("!!! Error during plot_wrf.R !!!")
-#    log.close()
-#    sys.exit() #exit with return code 0
-
 #=============================================================================
 #        Copy files for display on breezy
 #=============================================================================
@@ -319,7 +318,7 @@ for f in os.listdir(ninjaoutDir):
             print(e)
 
 #####-------- Zip things up for easier transfer --------------#############
-#zip the kmz files into an archive to copy to breezy
+#zip the kmz files into an archive to copy to ninjastorm
 pattern = ".kmz"
 with zipfile.ZipFile((os.path.join(ninjaoutDir, "kmz.zip")), 'w') as zip_ref:
     for f in os.listdir(ninjaoutDir):
