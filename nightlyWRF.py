@@ -122,9 +122,6 @@ if p.returncode != 0:
     log.close()
     sys.exit() #exit with return code 0
 
-p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./test.sh"], cwd = WPS, shell = True, stdout=subprocess.PIPE)
-out, err = p.communicate()
-
 #=============================================================================
 #        Run metgrid.exe
 #=============================================================================
