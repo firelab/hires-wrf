@@ -6,7 +6,7 @@ import os
 import re
 import datetime
 
-nightly_wrf = '/media/natalie/ExtraDrive2/nightly_wrf/'
+nightly_wrf = '/home/natalie/hires_wrf/'
 RUN = '/home/natalie/src/wrf/WRFV3/run/'
 outDir = nightly_wrf + "output/"
 ninjaoutDir = outDir + "ninjaout/"
@@ -20,7 +20,7 @@ wrfoutSrc = RUN + ('wrfout_d01_%s-%02d-%02d_18:00:00' % (start_year, start_month
 wrfoutDst = nightly_wrf + 'output/wrfout.nc'  
 shutil.copyfile(wrfoutSrc, wrfoutDst) 
 
-p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./runWN.sh"], cwd = outDir, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["/home/natalie/hires_wrf/./runWN.sh"], cwd = outDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 print out
 print err

@@ -11,7 +11,7 @@ import zipfile
 import datetime
 import urllib2
 
-nightly_wrf = '/media/natalie/ExtraDrive2/nightly_wrf/'
+nightly_wrf = '/home/natalie/hires_wrf/'
 logfile = nightly_wrf + 'nightlyWRF.log'
 WPS = '/home/natalie/src/wrf/WPS/'
 RUN = '/home/natalie/src/wrf/WRF/run/'
@@ -21,8 +21,8 @@ ninjaoutDir = outDir + "ninjaout/"
 #=============================================================================
 #        Setup environment
 #=============================================================================
-p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./setEnv.sh"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
-out, err = p.communicate()
+#p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./setEnv.sh"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+#out, err = p.communicate()
 
 #=============================================================================
 #        Open a log file
@@ -391,7 +391,7 @@ with zipfile.ZipFile((os.path.join(ninjaoutDir, "shapefile.zip")), 'w') as zip_r
 zip_ref.close()
 
 #copy the WRF-SURFACE*.kml, WRF-SURFACE*.bmp, timestamp file, and the WindNinja output files
-p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./copy_files.sh"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["/home/natalie/hires_wrf/./copy_files.sh"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 print out
 print err

@@ -4,7 +4,7 @@ import subprocess
 import datetime
 
 WPS = '/home/natalie/src/wrf/WPS/'
-dataDir = '/media/natalie/ExtraDrive2/nightly_wrf/data/'
+dataDir = '/home/natalie/hires_wrf/data/'
 
 #=============================================================================
 #        Link to wx data
