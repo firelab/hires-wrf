@@ -108,6 +108,7 @@ namelist.write("\n")
 namelist.write(" &dynamics\n")
 namelist.write(" w_damping                    = 1\n") 
 namelist.write(" diff_opt                     = 1\n") 
+#namelist.write(" diff_opt                     = 2\n")  #diff_opt 2 is more realistic, should switch?
 namelist.write(" km_opt                       = 4\n") 
 namelist.write(" diff_6th_opt                 = 0\n") 
 namelist.write(" diff_6th_factor              = 0.12\n") 

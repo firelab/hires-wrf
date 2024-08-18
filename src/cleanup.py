@@ -8,13 +8,33 @@ wpsDir = '/home/natalie/src/wrf/WPS'
 runDir = '/home/natalie/src/wrf/WRF/run/'
 nightly_wrf = '/home/natalie/hires_wrf/'
 outDir = nightly_wrf + "output/"
-ninjaoutDir = outDir + "ninjaout/"
+
+#assumes there are two domains running
+ninjaoutDir1 = outDir + "d01/ninjaout/"
+ninjaoutDir2 = outDir + "d02/ninjaout/"
+ninjaoutDir3 = outDir + "d03/ninjaout/"
 
 #=============================================================================
 #        Clean up WindNinja output
 #=============================================================================
-for f in os.listdir(ninjaoutDir):
-    f_path = os.path.join(ninjaoutDir, f)
+for f in os.listdir(ninjaoutDir1):
+    f_path = os.path.join(ninjaoutDir1, f)
+    try:
+        if os.path.isfile(f_path):
+            os.unlink(f_path)
+    except Exception as e:
+        print(e)
+
+for f in os.listdir(ninjaoutDir2):
+    f_path = os.path.join(ninjaoutDir2, f)
+    try:
+        if os.path.isfile(f_path):
+            os.unlink(f_path)
+    except Exception as e:
+        print(e)
+
+for f in os.listdir(ninjaoutDir3):
+    f_path = os.path.join(ninjaoutDir2, f)
     try:
         if os.path.isfile(f_path):
             os.unlink(f_path)

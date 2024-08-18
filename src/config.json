@@ -1,0 +1,18 @@
+{
+    "paths": {
+        "nightly_wrf": "/home/natalie/hires_wrf/",
+        "logfile": "/home/natalie/hires_wrf/output/d01/nightlyWRF.log",
+        "WPS": "/home/natalie/src/wrf/WPS/",
+        "RUN": "/home/natalie/src/wrf/WRF/run/",
+        "wpsDir": "/home/natalie/src/wrf/WPS/",
+        "runDir": "/home/natalie/src/wrf/WRF/run/",
+        "outDir": "/home/natalie/hires_wrf/output/d01/",
+        "ninjaoutDir": "/home/natalie/hires_wrf/output/d01/ninjaout/",
+        "serverDir": "natalie@ninjastorm.firelab.org:/home/natalie/wrf/d01/"
+    },
+    "location": {
+        "lat": "45.012853",
+        "lon": "-116.780326"
+    }
+}
+

@@ -11,16 +11,38 @@ import zipfile
 import datetime
 import urllib2
 
-nightly_wrf = '/home/natalie/hires_wrf/'
-logfile = nightly_wrf + 'nightlyWRF.log'
-WPS = '/home/natalie/src/wrf/WPS/'
-RUN = '/home/natalie/src/wrf/WRF/run/'
+import json
+
+def usage():
+    print("Not enough args!!!\n")
+    print("Usage:\n")
+    print("hiresWRF path/to/config.json\n")
+
+if len(sys.argv) != 2:
+    usage()
+    sys.exit()
+
+config_path = sys.argv[1]
+print("The input config_path is: %s" % config_path)
 
 #=============================================================================
-#        Setup environment
+#        Setup paths for current domain
 #=============================================================================
-#p = subprocess.Popen(["/media/natalie/ExtraDrive2/nightly_wrf/./setEnv.sh"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
-#out, err = p.communicate()
+with open(config_path, 'r') as f:
+    config = json.load(f)
+
+nightly_wrf = config['paths']['nightly_wrf']
+logfile = config['paths']['logfile']
+WPS = config['paths']['WPS']
+RUN = config['paths']['RUN']
+dataDir = config['paths']['dataDir']
+wpsDir = config['paths']['wpsDir']
+runDir = config['paths']['runDir']
+outDir = config['paths']['outDir']
+ninjaoutDir = config['paths']['ninjaoutDir']
+
+print("logfile: %s" % logfile)
+print("nightly_wrf: %s" % nightly_wrf)
 
 #=============================================================================
 #        Open a log file
@@ -28,52 +50,6 @@ RUN = '/home/natalie/src/wrf/WRF/run/'
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 log = open(logfile, 'w')
 log.write('%s: Starting nightly WRF simulations. \n' % time)
-
-#=============================================================================
-#        Clean up from preivous runs
-#=============================================================================
-log.write('#=====================================================\n')
-log.write('#              Cleaning up from previous runs\n')
-log.write('#=====================================================\n')
-
-p = subprocess.Popen(["./cleanup.py"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
-out, err = p.communicate()
-
-time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-log.write('%s: %s \n' % (time, err))
-log.write('%s: %s \n' % (time, out))
-
-if p.returncode != 0:
-    print "cleanup: non-zero return code!"
-    print p.returncode
-    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    log.write('%s: cleanup.py failed with return code %s \n' % (time, p.returncode))
-    log.write("!!! Error during cleanup !!!")
-    log.close()
-    sys.exit() #exit with return code 0
-
-#=============================================================================
-#        Download HRRR
-#=============================================================================
-log.write('#=====================================================\n')
-log.write('#              Downloading HRRR \n')
-log.write('#=====================================================\n')
-
-p = subprocess.Popen(["./fetchHRRR.py"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
-out, err = p.communicate()
-
-time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-log.write('%s:\n %s \n' % (time, err))
-log.write('%s:\n %s \n' % (time, out))
-
-if p.returncode != 0:
-    print "fetchHRRR: non-zero return code!"
-    print p.returncode
-    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    log.write('%s:\n fetchHRRRR.py failed with return code %s \n' % (time, p.returncode))
-    log.write("!!! Error during fetchHRRR !!!")
-    log.close()
-    sys.exit() #exit with return code 0
 
 #=============================================================================
 #        Run geogrid.exe
@@ -85,7 +61,7 @@ log.write('#=====================================================\n')
 log.write('#              Running geogrid.exe\n')
 log.write('#=====================================================\n')
 
-p = subprocess.Popen(["./runGeogrid.py"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["./runGeogrid.py %s" % config_path], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -196,7 +172,7 @@ log.write('#=====================================================\n')
 log.write('#              Running WindNinja \n')
 log.write('#=====================================================\n')
 
-p = subprocess.Popen(["./runWindNinja.py"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["./runWindNinja.py %s" % config_path], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -218,17 +194,18 @@ if p.returncode != 0:
 log.write('#=====================================================\n')
 log.write('#              Copying files \n')
 log.write('#=====================================================\n')
-p = subprocess.Popen(["./packageOutput.py"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["./packageOutput.py %s" % config_path], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 #copy the WRF-SURFACE*.kml, WRF-SURFACE*.bmp, timestamp file, and the WindNinja output files
-p = subprocess.Popen(["/home/natalie/hires_wrf/./copy_files.sh"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["/home/natalie/hires_wrf/./copyFiles.py %s" % config_path], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 print out
 print err
 
 if p.returncode != 0:
-    print "copy_files.sh: non-zero return code!"
+    print "copyFiles.py non-zero return code!"
     print p.returncode
 
 log.close()
+

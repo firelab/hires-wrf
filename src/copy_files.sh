@@ -1,21 +1,19 @@
 #! /bin/bash
 
+output_dir="/home/natalie/hires_wrf/output/ninjaout/"
+server_dir="natalie@ninjastorm.firelab.org:/home/natalie/wrf"
+
 #copy the WRF kml files
-scp /media/natalie/ExtraDrive2/nightly_wrf/output/ninjaout/wrf*.kml ubuntu@192.168.59.7:/home/ubuntu/ninjaInput/wrfSim/wrf
+scp $output_dir/wrf*.kml $server_dir
 
 #copy the WRF legend files
-scp /media/natalie/ExtraDrive2/nightly_wrf/output/ninjaout/*.bmp ubuntu@192.168.59.7:/home/ubuntu/ninjaInput/wrfSim/wrf_key
+scp $output_dir/*.bmp $server_dir
 
 #copy the WRF legend files
-scp /media/natalie/ExtraDrive2/nightly_wrf/output/ninjaout/wxLog.txt ubuntu@192.168.59.7:/home/ubuntu/ninjaInput/wrfSim
+scp $output_dir/wxLog.txt $server_dir
 
-#copy the WindNinja output files for download from the hires-wrf webpage
-scp /media/natalie/ExtraDrive2/nightly_wrf/output/ninjaout/*.kmz ubuntu@192.168.59.7:/home/ubuntu/ninjaInput/wrfSim/ninjaout/1km_wrf
-scp /media/natalie/ExtraDrive2/nightly_wrf/output/ninjaout/*.shp ubuntu@192.168.59.7:/home/ubuntu/ninjaInput/wrfSim/ninjaout/1km_wrf
-scp /media/natalie/ExtraDrive2/nightly_wrf/output/ninjaout/*.shx ubuntu@192.168.59.7:/home/ubuntu/ninjaInput/wrfSim/ninjaout/1km_wrf
-scp /media/natalie/ExtraDrive2/nightly_wrf/output/ninjaout/*.dbf ubuntu@192.168.59.7:/home/ubuntu/ninjaInput/wrfSim/ninjaout/1km_wrf
-scp /media/natalie/ExtraDrive2/nightly_wrf/output/ninjaout/*.prj ubuntu@192.168.59.7:/home/ubuntu/ninjaInput/wrfSim/ninjaout/1km_wrf
-scp /media/natalie/ExtraDrive2/nightly_wrf/output/ninjaout/*.asc ubuntu@192.168.59.7:/home/ubuntu/ninjaInput/wrfSim/ninjaout/1km_wrf
+#copy the zipped output files for download from the hires-wrf webpage
+scp $output_dir/wrf.zip  $server_dir/download
 
 #copy the wrfout file
-scp /media/natalie/ExtraDrive2/nightly_wrf/output/out.nc ubuntu@192.168.59.7:/home/ubuntu/ninjaInput/wrfSim/ninjaout/1km_wrf
+scp $output_dir../*.nc  $server_dir
