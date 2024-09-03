@@ -34,7 +34,7 @@ for f in os.listdir(ninjaoutDir2):
         print(e)
 
 for f in os.listdir(ninjaoutDir3):
-    f_path = os.path.join(ninjaoutDir2, f)
+    f_path = os.path.join(ninjaoutDir3, f)
     try:
         if os.path.isfile(f_path):
             os.unlink(f_path)

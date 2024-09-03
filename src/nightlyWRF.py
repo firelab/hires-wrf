@@ -222,13 +222,13 @@ p = subprocess.Popen(["./packageOutput.py"], cwd = nightly_wrf, shell = True, st
 out, err = p.communicate()
 
 #copy the WRF-SURFACE*.kml, WRF-SURFACE*.bmp, timestamp file, and the WindNinja output files
-p = subprocess.Popen(["/home/natalie/hires_wrf/./copy_files.sh"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["/home/natalie/hires_wrf/./copyFiles.py"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 print out
 print err
 
 if p.returncode != 0:
-    print "copy_files.sh: non-zero return code!"
+    print "copyFiles.py: non-zero return code!"
     print p.returncode
 
 log.close()

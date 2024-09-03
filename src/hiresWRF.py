@@ -189,15 +189,21 @@ if p.returncode != 0:
     sys.exit() #exit with return code 0
 
 #=============================================================================
-#        Copy files for display/download on server
+#        Package output for transfer to server
 #=============================================================================
 log.write('#=====================================================\n')
-log.write('#              Copying files \n')
+log.write('#              Package output files \n')
 log.write('#=====================================================\n')
 p = subprocess.Popen(["./packageOutput.py %s" % config_path], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
-#copy the WRF-SURFACE*.kml, WRF-SURFACE*.bmp, timestamp file, and the WindNinja output files
+#=============================================================================
+#        Transfer files to server
+#=============================================================================
+log.write('#=====================================================\n')
+log.write('#              Copying files \n')
+log.write('#=====================================================\n')
+
 p = subprocess.Popen(["/home/natalie/hires_wrf/./copyFiles.py %s" % config_path], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 print out
