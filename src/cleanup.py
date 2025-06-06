@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import re
@@ -9,7 +9,7 @@ runDir = '/home/natalie/src/wrf/WRF/run/'
 nightly_wrf = '/home/natalie/hires_wrf/'
 outDir = nightly_wrf + "output/"
 
-#assumes there are two domains running
+#assumes there are three domains running
 ninjaoutDir1 = outDir + "d01/ninjaout/"
 ninjaoutDir2 = outDir + "d02/ninjaout/"
 ninjaoutDir3 = outDir + "d03/ninjaout/"

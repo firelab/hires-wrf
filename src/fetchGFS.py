@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import datetime
 import subprocess
@@ -20,10 +20,10 @@ timeList = ['006', '007', '008', '009', '010', '011', '012', '013', '014']
 #wget https://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/gfs.20230425/12/atmos/gfs.t12z.pgrb2.0p25.f106
 
 for time in timeList:
-    print 'Downloading t12z.pgrb2.0p25.f%s' % time
+    print('Downloading t12z.pgrb2.0p25.f%s' % time)
     dataFile = 'http://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/gfs.%s/12/atmos/gfs.t12z.pgrb2.0p25.f%s'\
                 % (date, time)
     p = subprocess.Popen(["wget %s" % dataFile], cwd = dataDir, shell = True, stdout=subprocess.PIPE)
     out, err = p.communicate()
 
-print 'Download complete!'
+print('Download complete!')

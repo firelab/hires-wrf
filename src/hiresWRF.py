@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import subprocess
 import sys
@@ -9,7 +9,7 @@ import re
 import zipfile
 
 import datetime
-import urllib2
+import urllib.request
 
 import json
 
@@ -69,8 +69,8 @@ log.write('%s:\n %s \n' % (time, err))
 log.write('%s:\n %s \n' % (time, out))
 
 if p.returncode != 0:
-    print "runGeogrid: non-zero return code!"
-    print p.returncode
+    print("runGeogrid: non-zero return code!")
+    print(p.returncode)
     time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log.write('%s:\n runGeogrid.py failed with return code %s \n' % (time, p.returncode))
     log.write("!!! Error during runGeogrid !!!")
@@ -88,8 +88,8 @@ p = subprocess.Popen(["./runUngrib.py"], cwd = nightly_wrf, shell = True, stdout
 out, err = p.communicate()
 
 if p.returncode != 0:
-    print "runUngrib.py: non-zero return code!"
-    print p.returncode
+    print("runUngrib.py: non-zero return code!")
+    print(p.returncode)
     time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log.write('%s:\n runUngrib.py failed with return code %s \n' % (time, p.returncode))
     log.write("!!! Error during runUngrib !!!")
@@ -111,8 +111,8 @@ log.write('%s:\n %s \n' % (time, err))
 log.write('%s:\n %s \n' % (time, out))
 
 if p.returncode != 0:
-    print "metgrid: non-zero return code!"
-    print p.returncode
+    print("metgrid: non-zero return code!")
+    print(p.returncode)
     time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log.write('%s:\n metrid failed with return code %s \n' % (time, p.returncode))
     log.write("!!! Error during metgrid !!!")
@@ -134,8 +134,8 @@ log.write('%s:\n %s \n' % (time, err))
 log.write('%s:\n %s \n' % (time, out))
 
 if p.returncode != 0:
-    print "runReal: non-zero return code!"
-    print p.returncode
+    print("runReal: non-zero return code!")
+    print(p.returncode)
     time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log.write('%s: runReal.py failed with return code %s \n' % (time, p.returncode))
     log.write("!!! Error during runReal !!!")
@@ -157,8 +157,8 @@ log.write('%s:\n %s \n' % (time, err))
 log.write('%s:\n %s \n' % (time, out))
 
 if p.returncode != 0:
-    print "wrf.exe: non-zero return code!"
-    print p.returncode
+    print("wrf.exe: non-zero return code!")
+    print(p.returncode)
     time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log.write('%s: wrf.exe failed with return code %s \n' % (time, p.returncode))
     log.write("!!! Error during wrf.exe !!!")
@@ -180,8 +180,8 @@ log.write('%s:\n %s \n' % (time, err))
 log.write('%s:\n %s \n' % (time, out))
 
 if p.returncode != 0:
-    print "WindNinja: non-zero return code!"
-    print p.returncode
+    print("WindNinja: non-zero return code!")
+    print(p.returncode)
     time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     log.write('%s: WindNinja failed with return code %s \n' % (time, p.returncode))
     log.write("!!! Error during WindNinja !!!")
@@ -206,12 +206,12 @@ log.write('#=====================================================\n')
 
 p = subprocess.Popen(["/home/natalie/hires_wrf/./copyFiles.py %s" % config_path], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
-print out
-print err
+print(out)
+print(err)
 
 if p.returncode != 0:
-    print "copyFiles.py non-zero return code!"
-    print p.returncode
+    print("copyFiles.py non-zero return code!")
+    print(p.returncode)
 
 log.close()
 

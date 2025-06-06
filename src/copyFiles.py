@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import subprocess
 import sys
@@ -9,7 +9,7 @@ import re
 import zipfile
 
 import datetime
-import urllib2
+import urllib.request
 
 import json
 

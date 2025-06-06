@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import subprocess
 import shutil
@@ -56,7 +56,7 @@ log.write('WindNinja err: %s. \n' % err)
 log.write('Done running WindNinja. \n')
 
 if p.returncode != 0:
-    print "WindNinja: non-zero return code!"
-    print p.returncode
+    print("WindNinja: non-zero return code!")
+    print(p.returncode)
 
 log.close()
