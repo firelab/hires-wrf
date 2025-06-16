@@ -8,25 +8,24 @@
         "dataDir": "/home/natalie/hires_wrf/data",
         "runDir": "/home/natalie/src/wrf/WRF/run/",
         "outDir": "/home/natalie/hires_wrf/output/d01/",
-        "ninjaoutDir": "/home/natalie/hires_wrf/output/d01/ninjaout/",
-        "serverDir": "natalie@ninjastorm.firelab.org:/home/natalie/wrf/d01/"
+        "ninjaoutDir": "/home/natalie/hires_wrf/output/d01/ninjaout/"
     },
     "location": {
         "lat": "44.77133",
         "lon": "-111.10067"
-    }
+    },
     "datetime": {
         "startDay": "10",
-        "startMonth": "06"
-        "startYear": "2025"
-        "startHour": "20"
-        "startMinute": "00"
-        "startSecond": "00"
+        "startMonth": "06",
+        "startYear": "2025",
+        "startHour": "20",
+        "startMinute": "00",
+        "startSecond": "00",
         "endDay": "10",
-        "endMonth": "06"
-        "endYear": "2025"
-        "endHour": "22"
-        "endMinute": "00"
+        "endMonth": "06",
+        "endYear": "2025",
+        "endHour": "22",
+        "endMinute": "00",
         "endSecond": "00"
     }
 }
