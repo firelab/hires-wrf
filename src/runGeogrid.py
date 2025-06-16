@@ -25,7 +25,7 @@ print("The input config_path is: %s" % config_path)
 with open(config_path, 'r') as f:
     config = json.load(f)
 
-WPS = config['paths']['WPS']
+wpsDir = config['paths']['wpsDir']
 lat = config['location']['lat']
 lon = config['location']['lon']
 
@@ -35,7 +35,7 @@ print("input lon: %s" % lon)
 #=============================================================================
 #        Edit namelist.wps
 #=============================================================================
-namelistFile = WPS + "namelist.wps"
+namelistFile = wpsDir + "namelist.wps"
 namelist = open(namelistFile, 'w')
 
 today = datetime.datetime.utcnow().strftime('%Y-%m-%d')
@@ -88,6 +88,6 @@ namelist.close()
 #=============================================================================
 #        Run geogrid.exe
 #=============================================================================
-p = subprocess.Popen(["./geogrid.exe", ">&", "log.geogrid"], cwd = WPS, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["./geogrid.exe", ">&", "log.geogrid"], cwd = wpsDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 

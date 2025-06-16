@@ -26,7 +26,7 @@ print("The input config_path is: %s" % config_path)
 with open(config_path, 'r') as f:
     config = json.load(f)
 
-RUN = config['paths']['RUN']
+runDir = config['paths']['runDir']
 outDir = config['paths']['outDir']
 ninjaoutDir = config['paths']['ninjaoutDir']
 
@@ -42,7 +42,7 @@ start_day = datetime.date.today().day
 
 #copy wrfout file to output directory
 log.write('Copying wrfout file. \n')
-wrfoutSrc = RUN + ('wrfout_d01_%s-%02d-%02d_18:00:00' % (start_year, start_month, start_day))
+wrfoutSrc = runDir + ('wrfout_d01_%s-%02d-%02d_18:00:00' % (start_year, start_month, start_day))
 wrfoutDst = outDir + 'wrfout.nc'  
 shutil.copyfile(wrfoutSrc, wrfoutDst) 
 log.write('Done copying wrfout file. \n')

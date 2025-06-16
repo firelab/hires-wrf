@@ -2,8 +2,6 @@
     "paths": {
         "nightly_wrf": "/home/natalie/hires_wrf/",
         "logfile": "/home/natalie/hires_wrf/output/d01/nightlyWRF.log",
-        "WPS": "/home/natalie/src/wrf/WPS/",
-        "RUN": "/home/natalie/src/wrf/WRF/run/",
         "wpsDir": "/home/natalie/src/wrf/WPS/",
         "dataDir": "/home/natalie/hires_wrf/data",
         "runDir": "/home/natalie/src/wrf/WRF/run/",

@@ -33,8 +33,6 @@ with open(config_path, 'r') as f:
 
 nightly_wrf = config['paths']['nightly_wrf']
 logfile = config['paths']['logfile']
-WPS = config['paths']['WPS']
-RUN = config['paths']['RUN']
 dataDir = config['paths']['dataDir']
 wpsDir = config['paths']['wpsDir']
 runDir = config['paths']['runDir']
@@ -103,7 +101,7 @@ log.write('#=====================================================\n')
 log.write('#              Running metgrid.exe \n')
 log.write('#=====================================================\n')
 
-p = subprocess.Popen(["./metgrid.exe", ">&", "log.metgrid"], cwd = WPS, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["./metgrid.exe", ">&", "log.metgrid"], cwd = wpsDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -149,7 +147,7 @@ log.write('#=====================================================\n')
 log.write('#              Running wrf.exe \n')
 log.write('#=====================================================\n')
 
-p = subprocess.Popen(["mpirun -np 16 ./wrf.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["mpirun -np 16 ./wrf.exe"], cwd = runDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
