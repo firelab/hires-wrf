@@ -2,40 +2,66 @@
 
 import subprocess
 import datetime
+import json
+import sys
 
-RUN = '/home/natalie/src/wrf/WRF/run/'
+def usage():
+    print("Not enough args!!!\n")
+    print("Usage:\n")
+    print("runReal path/to/config.json\n")
+
+if len(sys.argv) != 2:
+    usage()
+    sys.exit()
+
+config_path = sys.argv[1]
+print("The input config_path is: %s" % config_path)
+
+#=============================================================================
+#        Setup paths for current domain
+#=============================================================================
+with open(config_path, 'r') as f:
+    config = json.load(f)
+
+runDir = config['paths']['runDir']
+lat = config['location']['lat']
+lon = config['location']['lon']
+startYear = config['datetime']['startYear']
+startMonth = config['datetime']['startMonth']
+startDay = config['datetime']['startDay']
+startHour = config['datetime']['startHour']
+startMinute = config['datetime']['startMinute']
+startSecond = config['datetime']['startSecond']
+endYear = config['datetime']['endYear']
+endMonth = config['datetime']['endMonth']
+endDay = config['datetime']['endDay']
+endHour = config['datetime']['endHour']
+endMinute = config['datetime']['endMinute']
+endSecond = config['datetime']['endSecond']
 
 #=============================================================================
 #        Edit namelist.input
 #=============================================================================
-namelistFile = RUN + "namelist.input"
+namelistFile = runDir + "namelist.input"
 namelist = open(namelistFile, 'w')
-
-start_year = datetime.date.today().year
-start_month = datetime.date.today().month
-start_day = datetime.date.today().day
-
-end_year = (datetime.date.today() + datetime.timedelta(days=1)).year
-end_month = (datetime.date.today() + datetime.timedelta(days=1)).month
-end_day = (datetime.date.today() + datetime.timedelta(days=1)).day
 
 namelist.write(" &time_control\n")
 namelist.write(" run_days                     = 0\n")
 namelist.write(" run_hours                    = 0\n")
 namelist.write(" run_minutes                  = 0\n")
 namelist.write(" run_seconds                  = 0\n")
-namelist.write(" start_year                   = %s\n" % start_year)
-namelist.write(" start_month                  = %s\n" % start_month)
-namelist.write(" start_day                    = %s\n" % start_day)
-namelist.write(" start_hour                   = 18\n")
-namelist.write(" start_minute                 = 0\n")
-namelist.write(" start_second                 = 0\n")
-namelist.write(" end_year                     = %s\n" % end_year)
-namelist.write(" end_month                    = %s\n" % end_month)
-namelist.write(" end_day                      = %s\n" % end_day)
-namelist.write(" end_hour                     = 05\n")
-namelist.write(" end_minute                   = 0\n")
-namelist.write(" end_second                   = 0\n")
+namelist.write(" start_year                   = %s\n" % startYear)
+namelist.write(" start_month                  = %s\n" % startMonth)
+namelist.write(" start_day                    = %s\n" % startDay)
+namelist.write(" start_hour                   = %s\n" % startHour)
+namelist.write(" start_minute                 = %s\n" % startMinute)
+namelist.write(" start_second                 = %s\n" % startSecond)
+namelist.write(" end_year                     = %s\n" % endYear)
+namelist.write(" end_month                    = %s\n" % endMonth)
+namelist.write(" end_day                      = %s\n" % endDay)
+namelist.write(" end_hour                     = %s\n" % endHour)
+namelist.write(" end_minute                   = %s\n" % endMinute)
+namelist.write(" end_second                   = %s\n" % endSecond)
 namelist.write(" interval_seconds             = 3600\n")
 namelist.write(" input_from_file              = .true.\n")
 namelist.write(" history_interval             = 60\n")
@@ -148,9 +174,9 @@ namelist.close()
 #=============================================================================
 #        Run real.exe
 #=============================================================================
-p = subprocess.Popen(["ln -sf ../../WPS/met_em* ."], cwd = RUN, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["ln -sf ../../WPS/met_em* ."], cwd = runDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
-p = subprocess.Popen(["mpirun -np 1 ./real.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["mpirun -np 1 ./real.exe"], cwd = runDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
