@@ -125,7 +125,6 @@ log.write('#              Running real.exe \n')
 log.write('#=====================================================\n')
 
 p = subprocess.Popen(["./runReal.py %s" % config_path], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
-p = subprocess.Popen(["./runReal.py"], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
