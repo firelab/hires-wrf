@@ -1,24 +1,22 @@
 # Steps to run with one or more domains
-Edit config.json and put it in `nightly_wrf/d01/`. Repeat for additional domains as needed, putting each config.json in `d02`, `d03`, etc.
+1. Edit `config.json` and put it in `${nightly_wrf}/output/d01/`. Repeat for additional domains as needed, putting each config.json in `${nightly_wrf}/output/d02`, `${nightly_wrf}/output/d03`, etc.
 
-runMultipleDomains.py controls the runs. This script:
-  -- reads one or more config files from `nightly_wrf/d0*/config.json` 
-  -- cleans up `nightly_wrf` from any previous runs 
-  -- runs fetchHRRR.py
-  -- runs hiresWRF.py on each domain
+2. `runMultipleDomains.py` controls the runs. Comment out/add domains as needed. This script:
+    - reads one or more config files from `${nightly_wrf}/output/d0*/config.json`
+    - cleans up `${nightly_wrf}` from any previous runs 
+    - runs `fetchHRRR.py`
+    - runs `hiresWRF.py` on each domain  
 
-Comment out/add domains as needed. 
-
-hiresWRF.py does the following for each domain:
-  -- reads in the current config file for the domain
-  -- runs runGeogrid.py
-  -- runs runUngrib.py
-  -- runs metgrid.exe
-  -- runs runReal.py
-  -- runs wrf.exe
-  -- runs runWindNinja.py
-  -- runs packageOutput.py
-  -- runs copyFiles.py
+3. `hiresWRF.py` does the following for each domain:
+    - reads in the current config file for the domain
+    - runs `runGeogrid.py`
+    - runs `runUngrib.py`
+    - runs `metgrid.exe`
+    - runs `runReal.py`
+    - runs `wrf.exe`
+    - runs `runWindNinja.py`
+    - runs `packageOutput.py`
+    - runs `copyFiles.py`
 
 
 # Directory Structure for Multiple Domains
