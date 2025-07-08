@@ -4,6 +4,7 @@ import subprocess
 import datetime
 import json
 import sys
+import os
 
 def usage():
     print("Not enough args!!!\n")
@@ -66,6 +67,14 @@ for datetime in datetimeList:
     print('Downloading %s' % dataFile)
     p = subprocess.Popen(["gsutil -m cp %s ." % dataFile], cwd = dataDir, shell = True, stdout=subprocess.PIPE)
     out, err = p.communicate()
+
+    #prepend date to filenames 
+    old_filename = 'hrrr.t%sz.wrfprsf00.grib2' % datetime[-2:] 
+    old_path = os.path.join(dataDir, old_filename)
+    new_filename = datetime[:8] + "." + old_filename 
+    new_path = os.path.join(dataDir, new_filename)
+    os.rename(old_path, new_path)
+    print('renamed %s to %s' % (old_filename, new_filename))
 
 print("Download complete!")
 
