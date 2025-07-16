@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import os
 import re
@@ -9,7 +9,7 @@ runDir = '/home/natalie/src/wrf/WRF/run/'
 nightly_wrf = '/home/natalie/hires_wrf/'
 outDir = nightly_wrf + "output/"
 
-#assumes there are three domains running
+#assumes there are two domains running
 ninjaoutDir1 = outDir + "d01/ninjaout/"
 ninjaoutDir2 = outDir + "d02/ninjaout/"
 ninjaoutDir3 = outDir + "d03/ninjaout/"
@@ -41,7 +41,7 @@ for f in os.listdir(ninjaoutDir3):
     except Exception as e:
         print(e)
 
-print 'WindNinja cleanup complete!'
+print('WindNinja cleanup complete!')
 
 #=============================================================================
 #        Clean up HRRR
@@ -54,7 +54,7 @@ for f in os.listdir(dataDir):
     except Exception as e:
         print(e)
 
-print 'HRRR cleanup complete!'
+print('HRRR cleanup complete!')
 
 #=============================================================================
 #        Clean up WPS
@@ -88,7 +88,7 @@ for f in os.listdir(wpsDir):
         except Exception as e:
             print(e)
 
-print 'WPS cleanup complete!'
+print('WPS cleanup complete!')
 
 #=============================================================================
 #        Clean up run directory
@@ -111,6 +111,6 @@ for f in os.listdir(runDir):
         except Exception as e:
             print(e)
 
-print 'run cleanup complete!'
+print('run cleanup complete!')
 
-print 'Cleanup complete!'
+print('Cleanup complete!')
