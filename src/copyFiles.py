@@ -37,22 +37,22 @@ serverDir = config['paths']['serverDir']
 print("scp %swrf*.kml %s" % (ninjaoutDir, serverDir))
 
 #copy the WRF kml files
-#p = subprocess.Popen(["scp -i /home/natalie/.ssh/id_rsa %swrf*.kml %s" % (ninjaoutDir, serverDir)], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+#p = subprocess.Popen(["scp -i /home/natalie/.ssh/id_ed25519 %swrf*.kml %s" % (ninjaoutDir, serverDir)], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 #out, err = p.communicate()
 
 #copy the WRF legend files
-#p = subprocess.Popen(["scp -i /home/natalie/.ssh/id_rsa %s*.bmp %s" % (ninjaoutDir, serverDir)], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+#p = subprocess.Popen(["scp -i /home/natalie/.ssh/id_ed25519 %s*.bmp %s" % (ninjaoutDir, serverDir)], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 #out, err = p.communicate()
 
 #copy the WRF legend files
-#p = subprocess.Popen(["scp -i /home/natalie/.ssh/id_rsa %swxLog.txt %s" % (ninjaoutDir, serverDir)], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+#p = subprocess.Popen(["scp -i /home/natalie/.ssh/id_ed25519 %swxLog.txt %s" % (ninjaoutDir, serverDir)], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 #out, err = p.communicate()
 
 #copy the zipped output files for download from the hires-wrf webpage
-p = subprocess.Popen(["scp -i /home/natalie/.ssh/id_rsa %swrf.zip %s" % (ninjaoutDir, serverDir)], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["scp -i /home/natalie/.ssh/id_ed25519 %swrf.zip %s" % (ninjaoutDir, serverDir)], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 #copy the wrfout file
-p = subprocess.Popen(["scp -i /home/natalie/.ssh/id_rsa %s../wrfout.nc %s" % (ninjaoutDir, serverDir)], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["scp -i /home/natalie/.ssh/id_ed25519 %s../wrfout.nc %s" % (ninjaoutDir, serverDir)], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
