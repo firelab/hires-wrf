@@ -151,6 +151,7 @@ namelist.close()
 p = subprocess.Popen(["ln -sf ../../WPS/met_em* ."], cwd = RUN, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
-p = subprocess.Popen(["mpirun -np 1 ./real.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/natalie/src/wrf/wrf_dependencies/wrf_dependencies/netcdf/lib &&"
+    "mpirun -np 1 ./real.exe"], cwd = RUN, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 

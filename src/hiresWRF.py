@@ -101,7 +101,8 @@ log.write('#=====================================================\n')
 log.write('#              Running metgrid.exe \n')
 log.write('#=====================================================\n')
 
-p = subprocess.Popen(["./metgrid.exe", ">&", "log.metgrid"], cwd = wpsDir, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/natalie/src/wrf/wrf_dependencies/wrf_dependencies/netcdf/lib &&"
+    "./metgrid.exe", ">&", "log.metgrid"], cwd = wpsDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -147,7 +148,8 @@ log.write('#=====================================================\n')
 log.write('#              Running wrf.exe \n')
 log.write('#=====================================================\n')
 
-p = subprocess.Popen(["mpirun -np 16 ./wrf.exe"], cwd = runDir, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/natalie/src/wrf/wrf_dependencies/wrf_dependencies/netcdf/lib &&"
+    "mpirun -np 16 ./wrf.exe"], cwd = runDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
 time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
