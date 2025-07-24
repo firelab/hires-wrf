@@ -14,4 +14,4 @@ This code provides workflows for:
   
   Note that `fetchHRRR` must be run independently before `hiresWRF.py` is called
 
-* PastCast simluations (see `pastCast/`)
+* PastCast simluations (see `src/pastcast/`)
