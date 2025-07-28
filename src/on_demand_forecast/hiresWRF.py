@@ -148,7 +148,7 @@ log.write('#=====================================================\n')
 log.write('#              Running wrf.exe \n')
 log.write('#=====================================================\n')
 
-p = subprocess.Popen(["export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/natalie/src/wrf/wrf_dependencies/wrf_dependencies/netcdf/lib &&"
+p = subprocess.Popen(["export LD_LIBRARY_PATH=/home/natalie/src/wrf/wrf_dependencies/wrf_dependencies/netcdf/lib:$LD_LIBRARY_PATH &&"
     "mpirun -np 16 ./wrf.exe"], cwd = runDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
