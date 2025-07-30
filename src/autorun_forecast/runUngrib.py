@@ -22,6 +22,6 @@ out, err = p.communicate()
 #=============================================================================
 #        Run ungrib.exe
 #=============================================================================
-p = subprocess.Popen(["export LD_LIBRARY_PATH=/home/natalie/src/wrf/wrf_dependencies/wrf_dependencies/grib2/lib:/opt/jasper-1.900.29/lib/:$LD_LIBRARY_PATH && ./ungrib.exe"], cwd = WPS, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["./ungrib.exe"], cwd = WPS, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 

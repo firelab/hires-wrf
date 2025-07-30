@@ -88,7 +88,6 @@ namelist.close()
 #=============================================================================
 #        Run geogrid.exe
 #=============================================================================
-p = subprocess.Popen(["export LD_LIBRARY_PATH=/home/natalie/src/wrf/wrf_dependencies/wrf_dependencies/netcdf/lib:$LD_LIBRARY_PATH &&"
-    "./geogrid.exe", ">&", "log.geogrid"], cwd = wpsDir, shell = True, stdout=subprocess.PIPE)
+p = subprocess.Popen(["./geogrid.exe", ">&", "log.geogrid"], cwd = wpsDir, shell = True, stdout=subprocess.PIPE)
 out, err = p.communicate()
 
