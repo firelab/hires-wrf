@@ -20,8 +20,8 @@ wrf_file = "/home/natalie/carr/wrf/output/d01/wrfout_d01_2018-07-26_070000.nc"
 ncfile = Dataset(wrf_file)
 
 # === Get 10-m wind components ===
-u10 = getvar(ncfile, "U10")
-v10 = getvar(ncfile, "V10")
+u10 = getvar(ncfile, "U10", timeidx=0)
+v10 = getvar(ncfile, "V10", timeidx=0)
 
 # === Get lat/lon coordinates ===
 lats, lons = latlon_coords(u10)
