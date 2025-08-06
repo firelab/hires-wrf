@@ -1,4 +1,7 @@
-These scipts provide basic plotting capabilities, mostly in Python.
+These scipts provide basic plotting capabilities
+===
 
-- plot_vectors.py 
+- plot_vectors.py
+
+<img src="images/vectors.png" />
 
