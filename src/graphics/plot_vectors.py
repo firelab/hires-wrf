@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
@@ -8,6 +9,11 @@ from wrf import getvar, latlon_coords, to_np, smooth2d
 import numpy as np
 from cartopy.io.img_tiles import StadiaMapsTiles
 #help(StadiaMapsTiles)
+
+try:
+    STADIA_MAPS_API_KEY = os.environ["STADIA_MAPS_API_KEY"]
+except KeyError:
+    print("STADIA_MAPS_API_KEY is not set.")
 
 # === Path to WRF output file ===
 wrf_file = "/home/natalie/carr/wrf/output/d01/wrfout_d01_2018-07-26_070000.nc"
@@ -24,8 +30,7 @@ lats, lons = latlon_coords(u10)
 skip = (slice(None, None, 2), slice(None, None, 2))  # every 10th point
 
 # === Use Stadia Maps basemap ===
-#tiler = StadiaMapsTiles(style="outdoors", apikey="2863a65f-e8b4-4e8b-b422-dc63d47f2ce0")  # Options: "outdoors", "alidade_smooth", etc.
-tiler = StadiaMapsTiles(style="stamen_terrain", apikey="2863a65f-e8b4-4e8b-b422-dc63d47f2ce0")  # Options: "outdoors", "alidade_smooth", etc.
+tiler = StadiaMapsTiles(style="stamen_terrain", apikey=STADIA_MAPS_API_KEY)  # Options: "outdoors", "alidade_smooth", etc.
 tiler_proj = tiler.crs
 
 # === Set up the plot ===
