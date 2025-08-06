@@ -19,15 +19,25 @@ ncfile = Dataset("/home/natalie/carr/wrf/output/d01/wrfout_d01_2018-07-26_070000
 ter = getvar(ncfile, "ter")  # Terrain height
 lats, lons = latlon_coords(ter)
 
-# Calculate center row
-ny, nx = lats.shape
-center_j = ny // 2
+## Calculate center row
+#ny, nx = lats.shape
+#center_j = ny // 2
+#
+## Start and end coordinates for the transect
+#start_lat = float(lats[center_j, 0])
+#start_lon = float(lons[center_j, 0])
+#end_lat   = float(lats[center_j, -1])
+#end_lon   = float(lons[center_j, -1])
 
-# Start and end coordinates for the transect
-start_lat = float(lats[center_j, 0])
-start_lon = float(lons[center_j, 0])
-end_lat   = float(lats[center_j, -1])
-end_lon   = float(lons[center_j, -1])
+# find index of closest row to desired latitude
+desired_lat = 40.43
+lat_diff = abs(to_np(lats[:, 0]) - desired_lat)
+closest_j = lat_diff.argmin()
+
+start_lat = float(lats[closest_j, 0])
+start_lon = float(lons[closest_j, 0])
+end_lat   = float(lats[closest_j, -1])
+end_lon   = float(lons[closest_j, -1])
 
 # Set up basemap
 tiler = StadiaMapsTiles(style="stamen_terrain", apikey=STADIA_MAPS_API_KEY)
@@ -48,11 +58,11 @@ ax.add_image(tiler, 8)
 
 # Plot the transect line (center row)
 ax.plot(
-            [start_lon, end_lon],
-                [start_lat, end_lat],
-                    color="red", linewidth=2, marker="o", transform=ccrs.PlateCarree(),
-                        label="Transect Line"
-                        )
+        [start_lon, end_lon],
+        [start_lat, end_lat],
+        color="red", linewidth=2, marker="o", transform=ccrs.PlateCarree(),
+        label="Transect Line"
+        )
 
 # Plot the domain outline
 ax.plot(to_np(lons[0, :]), to_np(lats[0, :]), "k--", transform=ccrs.PlateCarree())  # top
@@ -61,7 +71,7 @@ ax.plot(to_np(lons[:, 0]), to_np(lats[:, 0]), "k--", transform=ccrs.PlateCarree(
 ax.plot(to_np(lons[:, -1]), to_np(lats[:, -1]), "k--", transform=ccrs.PlateCarree())  # right
 
 # Title and legend
-ax.set_title("WRF Domain and Transect Location (Center Row)", fontsize=14)
+ax.set_title("WRF Domain and Transect Location (through %f)" % desired_lat, fontsize=14)
 ax.legend(loc="lower left")
 
 plt.tight_layout()
