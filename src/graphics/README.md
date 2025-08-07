@@ -13,6 +13,10 @@ These scipts provide basic plotting capabilities
 
 <img src="images/vertical_crosssection_windspeed_theta.png" />
 
+- plot_vertical_transect_vectors_theta.py
+
+<img src="images/wind_transect_wind_vectors_theta.png" />
+
 - plot_transect_location.py
 
 <img src="images/transect_location.png" />
