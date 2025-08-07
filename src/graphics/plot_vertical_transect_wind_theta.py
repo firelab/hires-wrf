@@ -72,7 +72,7 @@ ax.set_xlabel("Grid Point Along Cross Section")
 ax.set_ylabel("Height (m)")
 
 # Limit y-axis to 0–5 km
-ax.set_ylim(0, 5000)
+ax.set_ylim(0, 3000)
 
 plt.tight_layout()
 plt.savefig("wind_vertical_transect_with_theta.png", dpi=300)
