@@ -50,6 +50,29 @@ log = open(logfile, 'w')
 log.write('%s: Starting nightly WRF simulations. \n' % time)
 
 #=============================================================================
+#        Fetch the input weather data  
+#=============================================================================
+log.write('#=====================================================\n')
+log.write('#              Running fetchArchivedHRRR.py\n')
+log.write('#=====================================================\n')
+
+p = subprocess.Popen(["./fetchArchivedHRRR.py %s" % config_path], cwd = nightly_wrf, shell = True, stdout=subprocess.PIPE)
+out, err = p.communicate()
+
+time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+log.write('%s:\n %s \n' % (time, err))
+log.write('%s:\n %s \n' % (time, out))
+
+if p.returncode != 0:
+    print("fetchArchivedHRRR: non-zero return code!")
+    print(p.returncode)
+    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    log.write('%s:\n fetchArchivedHRRR.py failed with return code %s \n' % (time, p.returncode))
+    log.write("!!! Error during runArchivedHrrr !!!")
+    log.close()
+    sys.exit() #exit with return code 0
+
+#=============================================================================
 #        Run geogrid.exe
 #        Only needs to be done once per domain, but make sure namelist.wps
 #        is correct.
