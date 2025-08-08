@@ -27,3 +27,6 @@ These scipts provide basic plotting capabilities
 
 ## WindNinja 
 - The tool `wrf_to_kmz` can generate a KMZ of the 10-m winds that can be loaded in Google Earth
+- See https://github.com/firelab/windninja
+
+<img src="images/wrf2kmz.png" />
