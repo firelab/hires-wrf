@@ -29,18 +29,13 @@ with open(config_path, 'r') as f:
 runDir = config['paths']['runDir']
 outDir = config['paths']['outDir']
 ninjaoutDir = config['paths']['ninjaoutDir']
-startYear = config['datetime']['startYear']
-startMonth = config['datetime']['startMonth']
-startDay = config['datetime']['startDay']
-startHour = config['datetime']['startHour']
-startMinute = config['datetime']['startMinute']
-startSecond = config['datetime']['startSecond']
-endYear = config['datetime']['endYear']
-endMonth = config['datetime']['endMonth']
-endDay = config['datetime']['endDay']
-endHour = config['datetime']['endHour']
-endMinute = config['datetime']['endMinute']
-endSecond = config['datetime']['endSecond']
+nightlyWRF = config['paths']['nightly_wrf']
+lat = config['location']['lat']
+lon = config['location']['lon']
+start_year = config['datetime']['startYear']
+start_month = config['datetime']['startMonth']
+start_day = config['datetime']['startDay']
+start_hour = config['datetime']['startHour']
 
 print("Running: WindNinja_cli %swrf_initialization.cfg" % outDir)
 
@@ -50,14 +45,34 @@ log.write('Starting WindNinja simulations. \n')
 
 #copy wrfout file to output directory
 log.write('Copying wrfout file. \n')
-wrfoutSrc = RUN + ('wrfout_d01_%s-%S-%s_%s:%s:%s' % (startYear, startMonth, startDay, startHour, startMinute, startSecond))
+wrfoutSrc = runDir + ('wrfout_d01_%s-%s-%s_%s:00:00' % (start_year, start_month, start_day, start_hour))
 wrfoutDst = outDir + 'wrfout.nc'  
 shutil.copyfile(wrfoutSrc, wrfoutDst) 
 log.write('Done copying wrfout file. \n')
 
 #source /home/natalie/.bashrc
 log.write('Starting WindNinja. \n')
-p = subprocess.Popen(["export WINDNINJA_DATA=/home/natalie/src/windninja/windninja/data && /usr/local/bin/WindNinja_cli %swrf_initialization.cfg" % outDir], cwd = outDir, shell = True, stdout=subprocess.PIPE)
+
+print( "%swrf_initialization.cfg "
+        "--fetch_elevation %sdem.tif "
+        "--x_center %s "
+        "--y_center %s "
+        "--forecast_filename %swrfout.nc "
+        "--output_path %s" % (nightlyWRF, outDir, lon, lat, outDir, ninjaoutDir)) 
+
+#export HDF5_DISABLE_VERSION_CHECK is to ignore error that is arising due to conflicting HDF5 libs
+#could try setting LD_LIBRARY_PATH
+p = subprocess.Popen(["export WINDNINJA_DATA=/home/natalie/src/windninja/windninja/data && export HDF5_DISABLE_VERSION_CHECK=1 && /usr/local/bin/WindNinja_cli "
+        "%swrf_initialization.cfg "
+        "--fetch_elevation %sdem.tif "
+        "--x_center %s "
+        "--y_center %s "
+        "--forecast_filename %swrfout.nc "
+        "--output_path %s" % (nightlyWRF, outDir, lon, lat, outDir, ninjaoutDir)], 
+        cwd = outDir, 
+        shell = True, 
+        stdout=subprocess.PIPE)
+
 out, err = p.communicate()
 log.write('WindNinja out: %s. \n' % out)
 log.write('WindNinja err: %s. \n' % err)
