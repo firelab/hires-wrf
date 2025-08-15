@@ -21,6 +21,11 @@ These scipts provide basic plotting capabilities
 
 <img src="images/w_vertical_transect_with_theta.png" />
 
+- plot_vertical_transect_terrain.py
+
+<img src="images/wind_vertical_transect_with_theta_and_terrain.png" />
+
+
 - plot_transect_location.py
 
 <img src="images/transect_location.png" />
