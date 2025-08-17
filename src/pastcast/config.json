@@ -5,7 +5,7 @@
         "WPS": "/home/natalie/src/wrf/WPS/",
         "RUN": "/home/natalie/src/wrf/WRF/run/",
         "wpsDir": "/home/natalie/src/wrf/WPS/",
-        "dataDir": "/home/natalie/hires_wrf/data",
+        "dataDir": "/home/natalie/hires_wrf/data/",
         "runDir": "/home/natalie/src/wrf/WRF/run/",
         "outDir": "/home/natalie/hires_wrf/output/d01/",
         "ninjaoutDir": "/home/natalie/hires_wrf/output/d01/ninjaout/"
