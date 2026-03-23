@@ -1,6 +1,6 @@
-These scipts provide basic plotting capabilities
+These scipts provide basic plotting capabilities 
 ===
-## Python
+## Python `wrf-python` package
 - `plot_vectors.py`
 
 <img src="images/vectors.png" />
