@@ -1,0 +1,7 @@
+Info for running WRF with ERA5 data
+
+1. Download pressure levels and single levels (soil, etc.) --> see era5_request.py
+2. Link Vtable to ungrib/Variable_Tables/Vtable.ERA-interim.pl
+3. Run ungrib separately with prefixes PLEV and SFC (link to single .grib file for each)
+4. Set fg_name = 'PLEV','SFC' and run metgrid
+5. Set sfcp_to_sfcp = .false. and smooth_cg_topo = .false.
